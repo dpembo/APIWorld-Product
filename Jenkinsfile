@@ -66,7 +66,7 @@ sudo docker run --volume /var/lib/jenkins/workspace/APIWorld-Product_master/jmet
     }
     stage('Release To Test') {
       when {
-        success = true
+        success true
       }
       steps {
         echo 'Release to test'
