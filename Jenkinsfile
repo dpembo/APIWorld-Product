@@ -25,6 +25,7 @@ else
    echo "No Containers running"
 fi
 '''
+        input(id: 'version', message: 'Please provide version')
       }
     }
     stage('Build') {
