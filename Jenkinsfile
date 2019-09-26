@@ -3,9 +3,9 @@ pipeline {
   stages {
     stage('Setup') {
       steps {
-        sh '''export VERSION="0.0.0CI"
+        sh '''#!/bin/bash
 
-#!/bin/bash
+export VERSION="0.0.0CI"
 echo ---------------------------------------------------------------------------
 echo Build Information
 echo ---------------------------------------------------------------------------
