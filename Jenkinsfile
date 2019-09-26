@@ -39,7 +39,7 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
 echo "Unit Test Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn test'''
         sh '''#package the microservice
-Echo "Package the Microservice"
+echo "Package the Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn package'''
         sh '''echo "Move Package for Docker Build"
 cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar'''
