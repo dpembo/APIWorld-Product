@@ -81,7 +81,7 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
       when {
         anyOf {
           branch 'staging'
-          branch 'production'
+          branch 'master'
         }
 
       }
@@ -91,7 +91,7 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
     }
     stage('Release To Production') {
       when {
-        branch 'production'
+        branch 'master'
       }
       steps {
         echo 'Release to Prod'
