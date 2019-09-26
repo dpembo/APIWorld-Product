@@ -1,38 +1,33 @@
 //input(message: 'Release Service?', id: 'release')
-        userAborted = false
-        startMillis = System.currentTimeMillis()
-        timeoutMillis = 30000
+def userInput = true
+def didTimeout = false
+try {
+    timeout(time: 15, unit: 'SECONDS') { // change to a convenient timeout for you
+        userInput = input(
+        id: 'Proceed1', message: 'Was this successful?', parameters: [
+        [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+        ])
+    }
+} catch(err) { // timeout reached or input false
+    def user = err.getCauses()[0].getUser()
+    if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
+        didTimeout = true
+    } else {
+        userInput = false
+        echo "Aborted by: [${user}]"
+    }
+}
 
-        try {
-          timeout(time: timeoutMillis, unit: 'MILLISECONDS') {
-            input 'Do you approve?'
-          }
-        } 
-        catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) 
-        {
-          cause = e.causes.get(0)
-          echo cause.toString()
-          echo "Aborted by " + cause.getUser().toString()
-          if (cause.getUser().toString() != 'SYSTEM') {
-            startMillis = System.currentTimeMillis()
-          } else {
-            endMillis = System.currentTimeMillis()
-            if (endMillis - startMillis >= timeoutMillis) {
-              echo "Approval timed out. Continuing with deployment."
-            } else {
-              userAborted = true
-              echo "SYSTEM aborted, but looks like timeout period didn't complete. Aborting."
-            }
-          }
-        }
-
-        if (userAborted) 
-        {
-          currentBuild.result = 'ABORTED'
-        }
-        else 
-        {
-          currentBuild.result = 'SUCCESS'
-          echo "Firing the missiles!"
-        }
-      
+node {
+    if (didTimeout) {
+        // do something on timeout
+        echo "no input was received before timeout"
+    } else if (userInput == true) {
+        // do something
+        echo "this was successful"
+    } else {
+        // do something else
+        echo "this was not successful"
+        currentBuild.result = 'FAILURE'
+    } 
+}
