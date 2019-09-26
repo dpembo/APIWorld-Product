@@ -16,8 +16,15 @@ echo "Build      : $BUILD_NUMBER"
 echo ---------------------------------------------------------------------------
 
 rm -rf target/'''
-        sh '''
-docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}")) > /dev/nul'''
+        sh '''echo "CLEAN UP"
+runningCount=`docker ps -a -q --filter ancestor=productservice:0 | wc -l`
+
+if [ $runningCount > 0 ]; then
+   docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}")) > /dev/nul
+else
+   echo "No Containers running"
+fi
+'''
       }
     }
     stage('Build') {
