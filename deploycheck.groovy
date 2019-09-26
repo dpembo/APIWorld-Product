@@ -1,6 +1,6 @@
 //input(message: 'Release Service?', id: 'release')
 def userInput = true
-success = true
+def success = true
 try {
     timeout(time: 15, unit: 'SECONDS') { // change to a convenient timeout for you
         userInput = input(
