@@ -35,9 +35,6 @@ rm -rf jmeter'''
         sh '''#CompileTest Microservice
 echo "Compile Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn compile'''
-        sh '''#Unit Test Microservice
-echo "Unit Test Microservice"
-docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn test'''
         sh '''#Package the microservice
 echo "Package the Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn package'''
@@ -60,13 +57,24 @@ docker run -d -p 8090:8090 productservice:0
       }
     }
     stage('Load Test') {
-      steps {
-        sh '''rm -rf jmeter
+      parallel {
+        stage('Load Test') {
+          steps {
+            sh '''rm -rf jmeter
 mkdir jmeter
 mkdir jmeter/output
 cp src/main/loadtest.jmx jmeter/
 docker run --volume $WORKSPACE/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t /mnt/jmeter/loadtest.jmx -l /mnt/jmeter/result.jtl -j /mnt/jmeter/result.log -e -o /mnt/jmeter/output'''
-        perfReport(sourceDataFiles: 'jmeter/result.jtl', compareBuildPrevious: true, errorUnstableResponseTimeThreshold: '5000')
+            perfReport(sourceDataFiles: 'jmeter/result.jtl', compareBuildPrevious: true, errorUnstableResponseTimeThreshold: '5000')
+          }
+        }
+        stage('Unit Test') {
+          steps {
+            sh '''#Unit Test Microservice
+echo "Unit Test Microservice"
+docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn test'''
+          }
+        }
       }
     }
     stage('Release To Test') {
