@@ -65,10 +65,11 @@ docker run --volume $WORKSPACE/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t
     stage('Release To Test') {
       when {
         anyOf {
-                branch 'staging'
-                branch 'production'
-              }      
-            }
+          branch 'staging'
+          branch 'production'
+        }
+
+      }
       steps {
         echo 'Release to test'
       }
