@@ -76,6 +76,7 @@ docker run --volume $WORKSPACE/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t
     stage('Release To Production') {
       when {
         branch 'production'
+      }
       steps {
         echo 'Release to Prod'
       }
