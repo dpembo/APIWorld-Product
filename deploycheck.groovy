@@ -9,6 +9,7 @@ try {
         ])
     }
 } catch(err) { // timeout reached or input false
+    echo err.toString();
     def user = err.getCauses()[0].getUser()
     if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
         didTimeout = true
