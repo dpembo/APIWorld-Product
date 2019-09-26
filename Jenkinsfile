@@ -61,7 +61,6 @@ sudo docker run --volume /var/lib/jenkins/workspace/APIWorld-Product_master/jmet
     }
     stage('Release') {
       steps {
-        input(message: 'Release Service?', id: 'release')
         load 'deploycheck.groovy'
       }
     }
