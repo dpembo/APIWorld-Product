@@ -1,3 +1,4 @@
+def success = true
 pipeline {
   agent any
   stages {
@@ -65,6 +66,9 @@ sudo docker run --volume /var/lib/jenkins/workspace/APIWorld-Product_master/jmet
       }
     }
     stage('Release To Test') {
+      when {
+        success == true
+      }
       steps {
         echo 'Release to test'
       }
