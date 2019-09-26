@@ -25,7 +25,6 @@ else
    echo "No Containers running"
 fi
 '''
-        input(id: 'version', message: 'Please provide version')
       }
     }
     stage('Build') {
@@ -58,6 +57,11 @@ mkdir jmeter/output
 cp src/main/loadtest.jmx jmeter/
 sudo docker run --volume /var/lib/jenkins/workspace/APIWorld-Product_master/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t /mnt/jmeter/loadtest.jmx -l /mnt/jmeter/result.jtl -j /mnt/jmeter/result.log -e -o /mnt/jmeter/output'''
         perfReport(sourceDataFiles: 'jmeter/result.jtl', compareBuildPrevious: true, errorUnstableResponseTimeThreshold: '5000')
+      }
+    }
+    stage('Release') {
+      steps {
+        input(message: 'Release Service?', id: 'release')
       }
     }
   }
