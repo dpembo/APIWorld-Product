@@ -3,7 +3,19 @@ pipeline {
   stages {
     stage('Setup') {
       steps {
-        sh 'export VERSION="0.0.0CI"'
+        sh '''export VERSION="0.0.0CI"
+
+#!/bin/bash
+echo ---------------------------------------------------------------------------
+echo Build Information
+echo ---------------------------------------------------------------------------
+echo "Working on : $JOB_NAME"
+echo "Workspace  : $WORKSPACE" 
+echo "Revision   : $SVN_REVISION"
+echo "Build      : $BUILD_NUMBER"
+echo ---------------------------------------------------------------------------
+
+'''
       }
     }
     stage('Build') {
