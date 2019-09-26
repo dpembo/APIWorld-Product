@@ -16,6 +16,7 @@ echo "Build      : $BUILD_NUMBER"
 echo ---------------------------------------------------------------------------
 
 rm -rf target/'''
+        sh 'docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}"))'
       }
     }
     stage('Build') {
