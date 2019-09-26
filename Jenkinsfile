@@ -26,5 +26,19 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
         sh 'cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar'
       }
     }
+    stage('Containerize') {
+      steps {
+        sh '''docker build -t productservice:ci --build-arg PORT=8080 --build-arg JAR_FILE=service.jar .
+'''
+      }
+    }
+    stage('Deploy') {
+      steps {
+        sh '''#Run the container read for testing
+
+docker run -d -p 8090:8090 productservice:0
+'''
+      }
+    }
   }
 }
