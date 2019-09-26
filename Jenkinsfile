@@ -77,6 +77,6 @@ sudo docker run --volume /var/lib/jenkins/workspace/APIWorld-Product_master/jmet
     }
   }
   environment {
-    DEPLOY_TO = 'staging'
+    DEPLOY_TO = 'production'
   }
 }
