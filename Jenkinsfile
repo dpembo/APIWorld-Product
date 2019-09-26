@@ -32,5 +32,10 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
 '''
       }
     }
+    stage('Deploy') {
+      steps {
+        sh '#'
+      }
+    }
   }
 }
