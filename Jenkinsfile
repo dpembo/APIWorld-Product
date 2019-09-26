@@ -65,8 +65,8 @@ docker run --volume $WORKSPACE/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t
     stage('Release To Test') {
       when {
         anyOf {
-                environment name: 'DEPLOY_TO', value: 'staging'
-                environment name: 'DEPLOY_TO', value: 'production'
+                branch 'staging'
+                branch 'production'
               }      
             }
       steps {
@@ -75,10 +75,7 @@ docker run --volume $WORKSPACE/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t
     }
     stage('Release To Production') {
       when {
-        anyOf {
-                environment name: 'DEPLOY_TO', value: 'production'
-              }      
-            }
+        branch 'production'
       steps {
         echo 'Release to Prod'
       }
@@ -88,8 +85,5 @@ docker run --volume $WORKSPACE/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t
         echo 'done'
       }
     }
-  }
-  environment {
-    DEPLOY_TO = 'production'
   }
 }
