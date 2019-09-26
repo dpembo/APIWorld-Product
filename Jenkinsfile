@@ -3,9 +3,9 @@ pipeline {
   stages {
     stage('Setup') {
       steps {
-        sh '''export VERSION="0.0.0CI"
+        sh '''#!/bin/bash
 
-#!/bin/bash
+export VERSION="0.0.0CI"
 echo ---------------------------------------------------------------------------
 echo Build Information
 echo ---------------------------------------------------------------------------
@@ -15,7 +15,7 @@ echo "Revision   : $SVN_REVISION"
 echo "Build      : $BUILD_NUMBER"
 echo ---------------------------------------------------------------------------
 
-'''
+rm -rf target/'''
       }
     }
     stage('Build') {
@@ -23,6 +23,7 @@ echo ---------------------------------------------------------------------------
         sh '''#build the microservice
 
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn package'''
+        sh 'cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar'
       }
     }
   }
