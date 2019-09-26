@@ -67,9 +67,10 @@ sudo docker run --volume /var/lib/jenkins/workspace/APIWorld-Product_master/jmet
     stage('Release To Test') {
       when {
         anyOf {
-                environment name: 'DEPLOY_TO', value: 'staging'
-              }      
-            }
+          environment name: 'DEPLOY_TO', value: 'staging'
+        }
+
+      }
       steps {
         echo 'Release to test'
       }
@@ -79,5 +80,8 @@ sudo docker run --volume /var/lib/jenkins/workspace/APIWorld-Product_master/jmet
         echo 'done'
       }
     }
+  }
+  environment {
+    DEPLOY_TO = 'staging'
   }
 }
