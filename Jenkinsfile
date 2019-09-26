@@ -13,6 +13,7 @@ echo "Working on : $JOB_NAME"
 echo "Workspace  : $WORKSPACE" 
 echo "Revision   : $SVN_REVISION"
 echo "Build      : $BUILD_NUMBER"
+echo "Deploy to  : $DEPLOY_TO"
 echo ---------------------------------------------------------------------------
 
 rm -rf target/'''
@@ -24,7 +25,9 @@ if [ $runningCount -gt 0 ]; then
 else
    echo "No Containers running"
 fi
-'''
+
+rm -rf target
+rm -rf jmeter'''
       }
     }
     stage('Build') {
@@ -55,7 +58,7 @@ docker run -d -p 8090:8090 productservice:0
 mkdir jmeter
 mkdir jmeter/output
 cp src/main/loadtest.jmx jmeter/
-sudo docker run --volume /var/lib/jenkins/workspace/APIWorld-Product_master/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t /mnt/jmeter/loadtest.jmx -l /mnt/jmeter/result.jtl -j /mnt/jmeter/result.log -e -o /mnt/jmeter/output'''
+docker run --volume $WORKSPACE/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t /mnt/jmeter/loadtest.jmx -l /mnt/jmeter/result.jtl -j /mnt/jmeter/result.log -e -o /mnt/jmeter/output'''
         perfReport(sourceDataFiles: 'jmeter/result.jtl', compareBuildPrevious: true, errorUnstableResponseTimeThreshold: '5000')
       }
     }
