@@ -36,7 +36,7 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
       steps {
         sh '''#Run the container read for testing
 
-docker build -t productservice:0 --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
+docker run -p 8090:8090 productservice:0
 '''
       }
     }
