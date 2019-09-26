@@ -80,6 +80,6 @@ docker run --volume $WORKSPACE/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t
     }
   }
   environment {
-    DEPLOY_TO = 'production'
+    DEPLOY_TO = ''
   }
 }
