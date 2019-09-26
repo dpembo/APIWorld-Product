@@ -1,14 +1,17 @@
 //input(message: 'Release Service?', id: 'release')
         userAborted = false
         startMillis = System.currentTimeMillis()
-        timeoutMillis = 10000
+        timeoutMillis = 30000
 
         try {
           timeout(time: timeoutMillis, unit: 'MILLISECONDS') {
             input 'Do you approve?'
           }
-        } catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) {
+        } 
+        catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) 
+        {
           cause = e.causes.get(0)
+          echo cause.toString()
           echo "Aborted by " + cause.getUser().toString()
           if (cause.getUser().toString() != 'SYSTEM') {
             startMillis = System.currentTimeMillis()
@@ -23,9 +26,12 @@
           }
         }
 
-        if (userAborted) {
+        if (userAborted) 
+        {
           currentBuild.result = 'ABORTED'
-        } else {
+        }
+        else 
+        {
           currentBuild.result = 'SUCCESS'
           echo "Firing the missiles!"
         }
