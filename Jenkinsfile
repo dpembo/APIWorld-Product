@@ -25,7 +25,9 @@ if [ $runningCount -gt 0 ]; then
 else
    echo "No Containers running"
 fi
-'''
+
+rm -rf target
+rm -rf jmeter'''
       }
     }
     stage('Build') {
