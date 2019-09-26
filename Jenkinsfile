@@ -68,10 +68,21 @@ sudo docker run --volume /var/lib/jenkins/workspace/APIWorld-Product_master/jmet
       when {
         anyOf {
                 environment name: 'DEPLOY_TO', value: 'staging'
+                environment name: 'DEPLOY_TO', value: 'production'
               }      
             }
       steps {
         echo 'Release to test'
+      }
+    }
+    stage('Release To Production') {
+      when {
+        anyOf {
+                environment name: 'DEPLOY_TO', value: 'production'
+              }      
+            }
+      steps {
+        echo 'Release to Prod'
       }
     }
     stage('Done') {
