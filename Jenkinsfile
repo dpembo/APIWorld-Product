@@ -32,10 +32,17 @@ rm -rf jmeter'''
     }
     stage('Build') {
       steps {
-        sh '''#build the microservice
-
+        sh '''#Unit Test Microservice
+echo "Compile Microservice"
+docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn compile'''
+        sh '''#Unit Test Microservice
+echo "Unit Test Microservice"
+docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn test'''
+        sh '''#package the microservice
+echo "Package the Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn package'''
-        sh 'cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar'
+        sh '''echo "Move Package for Docker Build"
+cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar'''
       }
     }
     stage('Containerize') {
@@ -65,10 +72,11 @@ docker run --volume $WORKSPACE/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t
     stage('Release To Test') {
       when {
         anyOf {
-                branch 'staging'
-                branch 'production'
-              }      
-            }
+          branch 'staging'
+          branch 'production'
+        }
+
+      }
       steps {
         echo 'Release to test'
       }
