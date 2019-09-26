@@ -13,6 +13,7 @@ echo "Working on : $JOB_NAME"
 echo "Workspace  : $WORKSPACE" 
 echo "Revision   : $SVN_REVISION"
 echo "Build      : $BUILD_NUMBER"
+echo "Deploy to  : $DEPLOY_TO"
 echo ---------------------------------------------------------------------------
 
 rm -rf target/'''
