@@ -7,17 +7,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.productservice.ProductItem;
 
 @RestController
 @SpringBootApplication
 public class ProductServiceApplication {
 
-    public static List<Product> productList = new ArrayList<Product>();
+    public static List<ProductItem> productList = new ArrayList<ProductItem>();
 
     public static void main(String[] args) {
         SpringApplication.run(ProductServiceApplication.class, args);
-        productList.add(new Product(1,"foo","Foo Description"));
-        productList.add(new Product(2,"bar","Bar Description"));
+        productList.add(new ProductItem(1,"foo","Foo Description"));
+        productList.add(new ProductItem(2,"bar","Bar Description"));
     }
 
     @RequestMapping
@@ -26,7 +27,7 @@ public class ProductServiceApplication {
     }
 
     @RequestMapping("/product")
-    public List<Product> getProducts()
+    public List<ProductItem> getProducts()
     {
         return productList;       
     }

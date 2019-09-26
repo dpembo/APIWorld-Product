@@ -1,14 +1,14 @@
-public class Product {
+public class ProductItem {
 
     private Integer id;
     private String productName;
     private String productDescription;
 
-    public Product(){
+    public ProductItem(){
 
     }
 
-    public Product(Integer id, String productName, String productDescription)
+    public ProductItem(Integer id, String productName, String productDescription)
     {
         super();
         this.id = id;
@@ -19,6 +19,6 @@ public class Product {
 
     @Override
     public String toString(){
-        return "Product [id=" + id + ", productName=" + productName + ", productDescription=" + productDescription + "]";
+        return "ProductItem [id=" + id + ", productName=" + productName + ", productDescription=" + productDescription + "]";
     }
 }
