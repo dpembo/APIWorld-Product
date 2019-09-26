@@ -19,7 +19,7 @@ rm -rf target/'''
         sh '''echo "CLEAN UP"
 runningCount=`docker ps -a -q --filter ancestor=productservice:0 | wc -l`
 
-if [ $runningCount > 0 ]; then
+if [ $runningCount -gt 0 ]; then
    docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}")) > /dev/nul
 else
    echo "No Containers running"
