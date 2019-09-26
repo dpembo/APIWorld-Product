@@ -1,21 +1,33 @@
+package com.example.productservice;
 public class ProductItem {
 
-    private Integer id;
-    private String productName;
-    private String productDescription;
+    private  Integer id;
+    private  String productName;
+    private  String productDescription;
 
     public ProductItem(){
 
     }
 
-    public ProductItem(Integer id, String productName, String productDescription)
-    {
+    public ProductItem(Integer id, String productName, String productDescription) {
         super();
         this.id = id;
         this.productName = productName;
         this.productDescription = productDescription;
-
     }
+
+    public Integer getId(){
+        return id;
+    }
+
+    public String getProductName(){
+        return productName;
+    }
+
+    public String getProductDescription(){
+        return productDescription;
+    }
+
 
     @Override
     public String toString(){
