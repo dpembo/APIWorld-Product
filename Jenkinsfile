@@ -15,7 +15,7 @@ echo "Revision   : $SVN_REVISION"
 echo "Build      : $BUILD_NUMBER"
 echo ---------------------------------------------------------------------------
 
-'''
+rm -rf target/'''
       }
     }
     stage('Build') {
