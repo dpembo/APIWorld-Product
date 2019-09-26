@@ -58,7 +58,7 @@ docker run -d -p 8090:8090 productservice:0
 mkdir jmeter
 mkdir jmeter/output
 cp src/main/loadtest.jmx jmeter/
-sudo docker run --volume /var/lib/jenkins/workspace/APIWorld-Product_master/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t /mnt/jmeter/loadtest.jmx -l /mnt/jmeter/result.jtl -j /mnt/jmeter/result.log -e -o /mnt/jmeter/output'''
+sudo docker run --volume $workspace/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t /mnt/jmeter/loadtest.jmx -l /mnt/jmeter/result.jtl -j /mnt/jmeter/result.log -e -o /mnt/jmeter/output'''
         perfReport(sourceDataFiles: 'jmeter/result.jtl', compareBuildPrevious: true, errorUnstableResponseTimeThreshold: '5000')
       }
     }
