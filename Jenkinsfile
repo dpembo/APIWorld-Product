@@ -59,11 +59,6 @@ sudo docker run --volume /var/lib/jenkins/workspace/APIWorld-Product_master/jmet
         perfReport(sourceDataFiles: 'jmeter/result.jtl', compareBuildPrevious: true, errorUnstableResponseTimeThreshold: '5000')
       }
     }
-    stage('Release?') {
-      steps {
-        load 'deploycheck.groovy'
-      }
-    }
     stage('Release To Test') {
       when {
         anyOf {
