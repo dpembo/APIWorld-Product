@@ -32,13 +32,13 @@ rm -rf jmeter'''
     }
     stage('Build') {
       steps {
-        sh '''#Unit Test Microservice
+        sh '''#CompileTest Microservice
 echo "Compile Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn compile'''
         sh '''#Unit Test Microservice
 echo "Unit Test Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn test'''
-        sh '''#package the microservice
+        sh '''#Package the microservice
 echo "Package the Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn package'''
         sh '''echo "Move Package for Docker Build"
