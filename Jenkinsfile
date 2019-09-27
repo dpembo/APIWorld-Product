@@ -68,7 +68,7 @@ docker build -t productmg:ci .
 '''
       }
     }
-    stage('Deploy MicroSvc') {
+    stage('Deployment') {
       parallel {
         stage('Start MicroSvc') {
           steps {
@@ -88,7 +88,7 @@ docker run --rm --name productmg -d -p 9090:8090 productmg:ci
         }
       }
     }
-    stage('Load Test') {
+    stage('Testing') {
       parallel {
         stage('Load Test') {
           steps {
