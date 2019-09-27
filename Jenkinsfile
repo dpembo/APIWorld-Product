@@ -65,7 +65,7 @@ docker build -t productservice:ci --build-arg PORT=8090 --build-arg JAR_FILE=ser
 '''
         sh '''#Containerize Microgateway
 cd /opt/softwareag/microgateway
-docker build -t productmg:ci -f $WORKSPACE/microgateway/Dockerfile .
+docker build -t productmg:ci .
 '''
       }
     }
