@@ -20,7 +20,7 @@ echo ---------------------------------------------------------------------------
 runningCount=`docker ps -a -q --filter ancestor=productservice:0 | wc -l`
 
 if [ $runningCount -gt 0 ]; then
-   docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}")) > /dev/nul
+   docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}") > /dev/nul
 else
    echo "No MS Containers running"
 fi
@@ -40,7 +40,6 @@ fi
 echo "Clean Build Assets"
 rm -rf target
 rm -rf jmeter
-rm -rf microgateway
 '''
       }
     }
@@ -54,27 +53,42 @@ echo "Package the Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn package'''
         sh '''echo "Move Package for Docker Build"
 cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar'''
+        sh '''#Build MicroGateway
+cd /opt/softwareag/microgateway
+./microgateway.sh createDockerFile --docker_dir . -p 9090 -a $WORKSPACE/microgateway/product-service.zip -dof ./Dockerfile -c $WORKSPACE/microgateway/aliases.yml'''
       }
     }
     stage('Containerize') {
       steps {
-        sh '''#Build Microservice
-docker build -t productservice:ci --build-arg PORT=8080 --build-arg JAR_FILE=service.jar .
+        sh '''#Containerize Microservice
+docker build -t productservice:ci --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
 '''
-        sh '''#Build MicroGateway
+        sh '''#Containerize Microgateway
 cd /opt/softwareag/microgateway
-./microgateway.sh createDockerFile --docker_dir $WORKSPACE/microgateway/ -p 9090 -a $WORKSPACE/microgateway/product-service.zip -dof $WORKSPACE/microgateway/Dockerfile -c $WORKSPACE/microgateway/aliases.yml'''
-      }
-    }
-    stage('Deploy') {
-      steps {
-        sh '''#Run the container read for testing
-
-docker run --rm --name productservice -d -p 8090:8090 productservice:0
+docker build -t productmg:ci .
 '''
       }
     }
-    stage('Load Test') {
+    stage('Deployment') {
+      parallel {
+        stage('Start MicroSvc') {
+          steps {
+            sh '''#Run the container read for testing
+
+docker run --rm --name productservicems -d -p 8090:8090 productservice:ci
+'''
+          }
+        }
+        stage('Start MicroGW') {
+          steps {
+            sh '''#Run MicroGateway Container
+docker run --rm --name productmg -d -p 9090:9090 productmg:ci
+'''
+          }
+        }
+      }
+    }
+    stage('Testing') {
       parallel {
         stage('Load Test') {
           steps {
