@@ -27,12 +27,12 @@ else
 fi
 
 echo "Clean Test Containers"
-runningCount=`docker ps -a -q --filter ancestor=vmarrazzo/jmeter:latest | wc -l`
+runningCount=`docker ps -a -q --filter ancestor=jmeter:latest | wc -l`
 
 if [ $runningCount -gt 0 ]; then
    docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}")) > /dev/nul
 else
-   echo "Jmeter Containers running"
+   echo "No Jmeter Containers running"
 fi
 
 echo "Clean Build Assets"
