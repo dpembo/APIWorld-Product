@@ -64,6 +64,7 @@ cd /opt/softwareag/microgateway
 docker build -t productservice:ci --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
 '''
         sh '''#Containerize Microgateway
+cd microgateway
 docker build -t productmg:ci .
 '''
       }
@@ -81,7 +82,6 @@ docker run --rm --name productservicems -d -p 8090:8090 productservice:ci
         stage('Start MicroGW') {
           steps {
             sh '''#Run MicroGateway Container
-cd microgateway
 docker run --rm --name productmg -d -p 9090:9090 productmg:ci
 '''
           }
