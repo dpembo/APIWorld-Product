@@ -53,16 +53,19 @@ echo "Package the Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn package'''
         sh '''echo "Move Package for Docker Build"
 cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar'''
+        sh '''#Build MicroGateway
+cd /opt/softwareag/microgateway
+./microgateway.sh createDockerFile --docker_dir $WORKSPACE/microgateway/ -p 9090 -a $WORKSPACE/microgateway/product-service.zip -dof $WORKSPACE/microgateway/Dockerfile -c $WORKSPACE/microgateway/aliases.yml'''
       }
     }
     stage('Containerize') {
       steps {
-        sh '''#Build Microservice
+        sh '''#Containerize Microservice
 docker build -t productservice:ci --build-arg PORT=8080 --build-arg JAR_FILE=service.jar .
 '''
-        sh '''#Build MicroGateway
-cd /opt/softwareag/microgateway
-./microgateway.sh createDockerFile --docker_dir $WORKSPACE/microgateway/ -p 9090 -a $WORKSPACE/microgateway/product-service.zip -dof $WORKSPACE/microgateway/Dockerfile -c $WORKSPACE/microgateway/aliases.yml'''
+        sh '''#Containerize Microgateway
+docker build -t productmg:ci .
+'''
       }
     }
     stage('Deploy') {
