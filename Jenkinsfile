@@ -15,8 +15,7 @@ echo "Revision   : $SVN_REVISION"
 echo "Build      : $BUILD_NUMBER"
 echo "Deploy to  : $DEPLOY_TO"
 echo ---------------------------------------------------------------------------
-
-rm -rf target/'''
+'''
         sh '''echo "Clean Microservice Containers"
 runningCount=`docker ps -a -q --filter ancestor=productservice:0 | wc -l`
 
@@ -27,6 +26,9 @@ else
 fi
 
 echo "Clean Test Containers"
+
+sleep 1
+
 runningCount=`docker ps -a -q --filter ancestor=jmeter:latest | wc -l`
 
 if [ $runningCount -gt 0 ]; then
@@ -38,9 +40,8 @@ fi
 echo "Clean Build Assets"
 rm -rf target
 rm -rf jmeter
-
-echo "Prune Docker Volumes"
-docker volume prune -f'''
+rm -rf microgateway
+'''
       }
     }
     stage('Build') {
