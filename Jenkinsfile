@@ -55,7 +55,7 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
 cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar'''
         sh '''#Build MicroGateway
 cd /opt/softwareag/microgateway
-./microgateway.sh createDockerFile --docker_dir $WORKSPACE/microgateway/ -p 9090 -a $WORKSPACE/microgateway/product-service.zip -dof $WORKSPACE/microgateway/Dockerfile -c $WORKSPACE/microgateway/aliases.yml'''
+./microgateway.sh createDockerFile --docker_dir . -p 9090 -a $WORKSPACE/microgateway/product-service.zip -dof ./Dockerfile -c $WORKSPACE/microgateway/aliases.yml'''
       }
     }
     stage('Containerize') {
