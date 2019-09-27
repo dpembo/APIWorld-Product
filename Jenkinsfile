@@ -40,7 +40,6 @@ fi
 echo "Clean Build Assets"
 rm -rf target
 rm -rf jmeter
-rm -rf microgateway
 '''
       }
     }
