@@ -17,17 +17,30 @@ echo "Deploy to  : $DEPLOY_TO"
 echo ---------------------------------------------------------------------------
 
 rm -rf target/'''
-        sh '''echo "CLEAN UP"
+        sh '''echo "Clean Microservice Containers"
 runningCount=`docker ps -a -q --filter ancestor=productservice:0 | wc -l`
 
 if [ $runningCount -gt 0 ]; then
    docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}")) > /dev/nul
 else
-   echo "No Containers running"
+   echo "No MS Containers running"
 fi
 
+echo "Clean Test Containers"
+runningCount=`docker ps -a -q --filter ancestor=jmeter:latest | wc -l`
+
+if [ $runningCount -gt 0 ]; then
+   docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}")) > /dev/nul
+else
+   echo "No Jmeter Containers running"
+fi
+
+echo "Clean Build Assets"
 rm -rf target
-rm -rf jmeter'''
+rm -rf jmeter
+
+echo "Prune Docker Volumes"
+docker volume prune -f'''
       }
     }
     stage('Build') {
@@ -52,7 +65,7 @@ cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar'''
       steps {
         sh '''#Run the container read for testing
 
-docker run -d -p 8090:8090 productservice:0
+docker run --rm --name productservice -d -p 8090:8090 productservice:0
 '''
       }
     }
@@ -64,7 +77,7 @@ docker run -d -p 8090:8090 productservice:0
 mkdir jmeter
 mkdir jmeter/output
 cp src/main/loadtest.jmx jmeter/
-docker run --volume $WORKSPACE/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t /mnt/jmeter/loadtest.jmx -l /mnt/jmeter/result.jtl -j /mnt/jmeter/result.log -e -o /mnt/jmeter/output'''
+docker run --rm --name jmeter --volume $WORKSPACE/jmeter/:/mnt/jmeter vmarrazzo/jmeter:latest -n -t /mnt/jmeter/loadtest.jmx -l /mnt/jmeter/result.jtl -j /mnt/jmeter/result.log -e -o /mnt/jmeter/output'''
             perfReport(sourceDataFiles: 'jmeter/result.jtl', compareBuildPrevious: true, errorUnstableResponseTimeThreshold: '5000')
           }
         }
