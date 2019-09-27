@@ -74,7 +74,7 @@ docker build -t productmg:ci .
           steps {
             sh '''#Run the container read for testing
 
-docker run --rm --name productservice -d -p 8090:8090 productservice:ci
+docker run --rm --name productservicems -d -p 8090:8090 productservice:ci
 '''
           }
         }
