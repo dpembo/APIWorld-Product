@@ -1,4 +1,5 @@
+---
 aliases:
-  MicroServiceAlias:
-    type: simple
-    value: http://localhost:8090
+- type: simple
+  name: MicroServiceAlias
+  value: http://localhost:8090
