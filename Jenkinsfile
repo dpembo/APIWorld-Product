@@ -81,7 +81,7 @@ docker run --rm --name productservice -d -p 8090:8090 productservice:ci
         stage('Start MicroGW') {
           steps {
             sh '''#Run MicroGateway Container
-
+cd microgateway
 docker run --rm --name productmg -d -p 9090:9090 productmg:ci
 '''
           }
