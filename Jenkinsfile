@@ -68,12 +68,24 @@ docker build -t productmg:ci .
 '''
       }
     }
-    stage('Deploy') {
-      steps {
-        sh '''#Run the container read for testing
+    stage('Deploy MicroSvc') {
+      parallel {
+        stage('Start MicroSvc') {
+          steps {
+            sh '''#Run the container read for testing
 
 docker run --rm --name productservice -d -p 8090:8090 productservice:0
 '''
+          }
+        }
+        stage('Start MicroGW') {
+          steps {
+            sh '''#Run MicroGateway Container
+
+docker run --rm --name productmg -d -p 8090:8090 productmg:ci
+'''
+          }
+        }
       }
     }
     stage('Load Test') {
