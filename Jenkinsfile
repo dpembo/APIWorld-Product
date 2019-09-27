@@ -20,7 +20,7 @@ echo ---------------------------------------------------------------------------
 runningCount=`docker ps -a -q --filter ancestor=productservice:0 | wc -l`
 
 if [ $runningCount -gt 0 ]; then
-   docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}")) > /dev/nul
+   docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}") > /dev/nul
 else
    echo "No MS Containers running"
 fi
