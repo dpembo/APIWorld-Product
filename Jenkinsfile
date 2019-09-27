@@ -62,9 +62,7 @@ docker build -t productservice:ci --build-arg PORT=8080 --build-arg JAR_FILE=ser
 '''
         sh '''#Build MicroGateway
 cd /opt/softwareag/microgateway
-./microgateway.sh createDockerFile --docker_dir $WORKSPACE/microgateway/ -p 9090 -a $WORKSPACE/microgateway/product-service.zip -dof $WORKSPACE/microgateway/Dockerfile
-
-#-c /var/lib/jenkins/workspace/APIWorld-Product_master/microgateway/aliases.yml'''
+./microgateway.sh createDockerFile --docker_dir $WORKSPACE/microgateway/ -p 9090 -a $WORKSPACE/microgateway/product-service.zip -dof $WORKSPACE/microgateway/Dockerfile -c $WORKSPACE/microgateway/aliases.yml'''
       }
     }
     stage('Deploy') {
