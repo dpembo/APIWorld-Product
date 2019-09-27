@@ -57,8 +57,14 @@ cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar'''
     }
     stage('Containerize') {
       steps {
-        sh '''docker build -t productservice:ci --build-arg PORT=8080 --build-arg JAR_FILE=service.jar .
+        sh '''#Build Microservice
+docker build -t productservice:ci --build-arg PORT=8080 --build-arg JAR_FILE=service.jar .
 '''
+        sh '''#Build MicroGateway
+cd /opt/softwareag/microgateway
+./microgateway.sh createDockerFile --docker_dir $WORKSPACE/microgateway/ -p 9090 -a $WORKSPACE/microgateway/product-service.zip -dof $WORKSPACE/microgateway/Dockerfile
+
+#-c /var/lib/jenkins/workspace/APIWorld-Product_master/microgateway/aliases.yml'''
       }
     }
     stage('Deploy') {
