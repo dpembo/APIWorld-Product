@@ -40,7 +40,7 @@ rm -rf target
 rm -rf jmeter
 
 echo "Prune Docker Volumes"
-docker volume prune'''
+docker volume prune -f'''
       }
     }
     stage('Build') {
