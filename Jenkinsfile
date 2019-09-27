@@ -15,8 +15,7 @@ echo "Revision   : $SVN_REVISION"
 echo "Build      : $BUILD_NUMBER"
 echo "Deploy to  : $DEPLOY_TO"
 echo ---------------------------------------------------------------------------
-
-rm -rf target/'''
+'''
         sh '''echo "Clean Microservice Containers"
 runningCount=`docker ps -a -q --filter ancestor=productservice:0 | wc -l`
 
@@ -27,10 +26,13 @@ else
 fi
 
 echo "Clean Test Containers"
+
+sleep 1
+
 runningCount=`docker ps -a -q --filter ancestor=jmeter:latest | wc -l`
 
 if [ $runningCount -gt 0 ]; then
-   docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}")) > /dev/nul
+   docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}") > /dev/nul
 else
    echo "No Jmeter Containers running"
 fi
@@ -38,9 +40,8 @@ fi
 echo "Clean Build Assets"
 rm -rf target
 rm -rf jmeter
-
-echo "Prune Docker Volumes"
-docker volume prune -f'''
+rm -rf microgateway
+'''
       }
     }
     stage('Build') {
@@ -62,9 +63,7 @@ docker build -t productservice:ci --build-arg PORT=8080 --build-arg JAR_FILE=ser
 '''
         sh '''#Build MicroGateway
 cd /opt/softwareag/microgateway
-./microgateway.sh createDockerFile --docker_dir $WORKSPACE/microgateway/ -p 9090 -a $WORKSPACE/microgateway/product-service.zip -dof $WORKSPACE/microgateway/Dockerfile
-
-#-c /var/lib/jenkins/workspace/APIWorld-Product_master/microgateway/aliases.yml'''
+./microgateway.sh createDockerFile --docker_dir $WORKSPACE/microgateway/ -p 9090 -a $WORKSPACE/microgateway/product-service.zip -dof $WORKSPACE/microgateway/Dockerfile -c $WORKSPACE/microgateway/aliases.yml'''
       }
     }
     stage('Deploy') {
