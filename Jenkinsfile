@@ -38,7 +38,9 @@ fi
 echo "Clean Build Assets"
 rm -rf target
 rm -rf jmeter
-'''
+
+echo "Prune Docker Volumes"
+docker volume prune'''
       }
     }
     stage('Build') {
