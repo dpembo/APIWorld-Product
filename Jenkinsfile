@@ -65,7 +65,7 @@ cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar'''
       steps {
         sh '''#Run the container read for testing
 
-docker run -d -p 8090:8090 productservice:0
+docker run --rm --name productservice -d -p 8090:8090 productservice:0
 '''
       }
     }
