@@ -82,7 +82,7 @@ docker run --rm --name productservice -d -p 8090:8090 productservice:0
           steps {
             sh '''#Run MicroGateway Container
 
-docker run --rm --name productmg -d -p 8090:8090 productmg:ci
+docker run --rm --name productmg -d -p 9090:8090 productmg:ci
 '''
           }
         }
