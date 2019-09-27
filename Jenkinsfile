@@ -17,17 +17,28 @@ echo "Deploy to  : $DEPLOY_TO"
 echo ---------------------------------------------------------------------------
 
 rm -rf target/'''
-        sh '''echo "CLEAN UP"
+        sh '''echo "Clean Microservice Containers"
 runningCount=`docker ps -a -q --filter ancestor=productservice:0 | wc -l`
 
 if [ $runningCount -gt 0 ]; then
    docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}")) > /dev/nul
 else
-   echo "No Containers running"
+   echo "No MS Containers running"
 fi
 
+echo "Clean Test Containers"
+runningCount=`docker ps -a -q --filter ancestor=vmarrazzo/jmeter:latest | wc -l`
+
+if [ $runningCount -gt 0 ]; then
+   docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}")) > /dev/nul
+else
+   echo "Jmeter Containers running"
+fi
+
+echo "Clean Build Assets"
 rm -rf target
-rm -rf jmeter'''
+rm -rf jmeter
+'''
       }
     }
     stage('Build') {
