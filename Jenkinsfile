@@ -32,7 +32,7 @@ sleep 1
 runningCount=`docker ps -a -q --filter ancestor=jmeter:latest | wc -l`
 
 if [ $runningCount -gt 0 ]; then
-   docker rm $(docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}")) > /dev/nul
+   docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}") > /dev/nul
 else
    echo "No Jmeter Containers running"
 fi
