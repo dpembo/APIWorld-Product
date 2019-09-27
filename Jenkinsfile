@@ -61,7 +61,7 @@ cd /opt/softwareag/microgateway
     stage('Containerize') {
       steps {
         sh '''#Containerize Microservice
-docker build -t productservice:ci --build-arg PORT=8080 --build-arg JAR_FILE=service.jar .
+docker build -t productservice:ci --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
 '''
         sh '''#Containerize Microgateway
 docker build -t productmg:ci .
@@ -74,7 +74,7 @@ docker build -t productmg:ci .
           steps {
             sh '''#Run the container read for testing
 
-docker run --rm --name productservice -d -p 8090:8090 productservice:0
+docker run --rm --name productservice -d -p 8090:8090 productservice:ci
 '''
           }
         }
