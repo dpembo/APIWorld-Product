@@ -129,9 +129,16 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
         echo 'Release to Prod'
       }
     }
-    stage('Done') {
+    stage('Tidyup') {
       steps {
-        echo 'done'
+        sh '''#Tidy up after build
+docker image prune -f
+docker volume prune -f'''
+      }
+    }
+    stage('Complete') {
+      steps {
+        echo 'Complete'
       }
     }
   }
