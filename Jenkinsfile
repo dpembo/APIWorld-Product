@@ -118,6 +118,20 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
         }
       }
     }
+    stage('Register Cntrs') {
+      steps {
+        sh '''#push image to registry
+
+#First tag
+docker tag productservice:ci apiworldref:5000/productservice
+docker tag productmg:ci apiworldref:5000/productmg
+
+#second push 
+docker push apiworldref:5000/productservice
+docker push apiworldref:5000/productmg'''
+      }
+    }
+    
     stage('Release To Test') {
       when {
         anyOf {
@@ -159,19 +173,6 @@ docker image prune -f
 docker volume prune -f
 
 '''
-      }
-    }
-    stage('Register Cntrs') {
-      steps {
-        sh '''#push image to registry
-
-#First tag
-docker tag productservice:ci apiworldref:5000/productservice
-docker tag productmg:ci apiworldref:5000/productmg
-
-#second push 
-docker push apiworldref:5000/productservice
-docker push apiworldref:5000/productmg'''
       }
     }
   }
