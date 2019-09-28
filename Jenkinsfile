@@ -25,16 +25,9 @@ else
    echo "No MS Containers running"
 fi
 
-#Stop containers
-{ # try
 
-docker stop productmg
-docker stop productservicems
-
-
-} || { # catch
-    # save log for exception 
-}
+docker stop productmg || true
+docker stop productservicems || true
 
 echo "Clean Test Containers"
 
