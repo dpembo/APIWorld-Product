@@ -132,6 +132,12 @@ docker push apiworldref:5000/productmg'''
       }
     }
     stage('Release To Test') {
+      agent {
+        node {
+          label 'RefEnv'
+        }
+
+      }
       when {
         anyOf {
           branch 'staging'
@@ -140,6 +146,7 @@ docker push apiworldref:5000/productmg'''
       }
       steps {
         echo 'Release to test'
+        sh 'uname -a'
       }
     }
     stage('Release To Production') {
