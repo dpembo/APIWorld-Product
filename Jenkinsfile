@@ -25,7 +25,12 @@ else
    echo "No MS Containers running"
 fi
 
+#Stop containers
+docker stop productmg
+docker stop productservicems
+
 echo "Clean Test Containers"
+
 
 sleep 1
 
@@ -40,6 +45,7 @@ fi
 echo "Clean Build Assets"
 rm -rf target
 rm -rf jmeter
+
 '''
       }
     }
