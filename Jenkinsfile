@@ -119,6 +119,15 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
       }
       steps {
         echo 'Release to test'
+        sh '''#push image to registry
+
+#First tag
+docker tag productservice:ci apiworldref:5000/productservice
+docker tag productmg:ci apiworldref:5000/productmg
+
+#second push 
+docker push apiworldref:5000/productservice
+docker push apiworldref:5000/productmg'''
       }
     }
     stage('Release To Production') {
