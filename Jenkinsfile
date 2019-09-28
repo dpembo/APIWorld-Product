@@ -144,7 +144,7 @@ docker push apiworldref:5000/productmg'''
         echo 'Release to Prod'
       }
     }
-    stage('Tidyup') {
+    stage('Clean') {
       steps {
         sh '''#Tidy up after build
 
@@ -157,11 +157,6 @@ docker image prune -f
 docker volume prune -f
 
 '''
-      }
-    }
-    stage('Complete') {
-      steps {
-        echo 'Complete'
       }
     }
   }
