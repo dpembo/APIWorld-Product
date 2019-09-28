@@ -132,8 +132,16 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
     stage('Tidyup') {
       steps {
         sh '''#Tidy up after build
+
+#Stop containers
+docker stop productmg
+docker stop productservicems
+
+#Prune
 docker image prune -f
-docker volume prune -f'''
+docker volume prune -f
+
+'''
       }
     }
     stage('Complete') {
