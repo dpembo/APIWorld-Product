@@ -122,7 +122,6 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
       when {
         anyOf {
           branch 'staging'
-          branch 'master'
         }
 
       }
