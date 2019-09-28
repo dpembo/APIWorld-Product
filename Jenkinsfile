@@ -26,8 +26,15 @@ else
 fi
 
 #Stop containers
+{ # try
+
 docker stop productmg
 docker stop productservicems
+
+
+} || { # catch
+    # save log for exception 
+}
 
 echo "Clean Test Containers"
 
