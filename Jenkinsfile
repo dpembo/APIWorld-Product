@@ -15,6 +15,9 @@ echo "Revision   : $SVN_REVISION"
 echo "Build      : $BUILD_NUMBER"
 echo "Deploy to  : $DEPLOY_TO"
 echo ---------------------------------------------------------------------------
+echo "GIT_COMMIT : $GIT_COMMIT" 
+echo "GIT_BRANCH : $GIT_BRANCH"
+echo ---------------------------------------------------------------------------
 '''
         sh '''echo "Clean Microservice Containers"
 runningCount=`docker ps -a -q --filter ancestor=productservice:0 | wc -l`
