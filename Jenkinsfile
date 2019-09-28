@@ -150,11 +150,18 @@ docker push apiworldref:5000/productmg'''
       }
     }
     stage('Release To Production') {
+      agent {
+        node {
+          label 'RefEnv'
+        }
+
+      }
       when {
         branch 'master'
       }
       steps {
         echo 'Release to Prod'
+        sh 'uname -a'
       }
     }
     stage('Clean') {
