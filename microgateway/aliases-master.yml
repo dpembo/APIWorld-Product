@@ -1,0 +1,4 @@
+aliases:
+  MicroServiceAlias:
+    type: simple
+    value: http://apiworldref:8090
