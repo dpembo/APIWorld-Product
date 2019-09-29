@@ -76,16 +76,13 @@ rm -rf jmeter
     stage('Build') {
       steps {
         echo 'Build Project'
-        sh '''echo $VERSION
-echo 1
-echo ${userInput}
-echo 2
-echo $userInput
-echo 3
-echo %userInput%
-echo 4
-echo !userInput!
-echo 5
+        sh '''if [[ -z "$VERSION" ]]; then
+   VERSION=ci
+fi
+
+echo Version is: $VERSION
+
+
 #CompileTest Microservice
 echo "Compile Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn compile'''
@@ -104,20 +101,12 @@ cd /opt/softwareag/microgateway
         sh '''#Containerize Microservice
 
 
-#if [ $GIT_BRANCH = "master" ]; then
-#   echo "Building for master"
-#   version=$GIT_COMMIT
-#else
-#   echo "CI Build"
-   version=ci
-#fi
 
-
-docker build -t productservice:$version --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
-'''
+docker build -t productservice:$VERSION --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
+#docker tag productservice:$VERSION productservice:$VERSION'''
         sh '''#Containerize Microgateway
 cd /opt/softwareag/microgateway
-docker build -t productmg:ci .
+docker build -t productmg:$VERSION .
 '''
       }
     }
@@ -127,14 +116,14 @@ docker build -t productmg:ci .
           steps {
             sh '''#Run the container read for testing
 
-docker run --rm --name productservicems -d -p 8090:8090 productservice:ci
+docker run --rm --name productservicems -d -p 8090:8090 productservice:$VERSION
 '''
           }
         }
         stage('Start MicroGW') {
           steps {
             sh '''#Run MicroGateway Container
-docker run --rm --name productmg -d -p 9090:9090 productmg:ci
+docker run --rm --name productmg -d -p 9090:9090 productmg:$VERSION
 '''
           }
         }
@@ -166,12 +155,12 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
         sh '''#push image to registry
 
 #First tag
-docker tag productservice:ci apiworldref:5000/productservice
-docker tag productmg:ci apiworldref:5000/productmg
+docker tag productservice:$VERSION apiworldref:5000/productservice:$VERSION
+docker tag productmg:$VERSION apiworldref:5000/productmg:$VERSION
 
 #second push 
-docker push apiworldref:5000/productservice
-docker push apiworldref:5000/productmg'''
+docker push apiworldref:5000/productservice:$VERSION
+docker push apiworldref:5000/productmg:$VERSION'''
       }
     }
     stage('Release To Test') {
