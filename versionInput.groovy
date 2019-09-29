@@ -5,4 +5,4 @@ id: 'Version Required', message: 'Please provide version number', parameters: [
 
 env.VERSION=userInput
 
-build.setDisplayName("ReleaseBuild v" + userInput)
+//build.setDisplayName("ReleaseBuild v" + userInput)
