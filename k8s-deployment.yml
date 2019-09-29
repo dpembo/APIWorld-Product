@@ -19,7 +19,7 @@ metadata:
   labels:
     app: product-service
 spec:
-  minReadySeconds: 10
+  minReadySeconds: 30
   replicas: 1
   selector:
     matchLabels:
