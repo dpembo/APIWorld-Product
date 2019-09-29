@@ -1,6 +1,8 @@
 #
 # Input file to create a Kubernetes deployment with a Microgateway
 # Docker image including health checks
+# 
+# Added pull always policy
 #
 # Prerequisites:
 #   1. Create Microgateway Docker Image
