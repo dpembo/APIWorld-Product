@@ -60,3 +60,4 @@ spec:
         image: apiworldref:5000/productservice:latest
         ports:
         - containerPort: 8090
+      imagePullPolicy: Always
