@@ -20,10 +20,13 @@ echo "GIT_BRANCH : $GIT_BRANCH"
 echo ---------------------------------------------------------------------------
 '''
         sh '''echo "Clean Microservice Containers"
-runningCount=`docker ps -a -q --filter ancestor=productservice:0 | wc -l`
+
+#docker ps -a | grep productservice: |  cut -d" " -f1
+
+runningCount=`docker ps -a -q --filter ancestor=productservice:ci | wc -l`
 
 if [ $runningCount -gt 0 ]; then
-   docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}") > /dev/nul
+   docker stop $(docker ps -a -q --filter ancestor=productservice:ci --format="{{.ID}}") > /dev/nul
 else
    echo "No MS Containers running"
 fi
@@ -40,7 +43,7 @@ sleep 1
 runningCount=`docker ps -a -q --filter ancestor=jmeter:latest | wc -l`
 
 if [ $runningCount -gt 0 ]; then
-   docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}") > /dev/nul
+   docker stop $(docker ps -a -q --filter ancestor=jmeter:latest --format="{{.ID}}") > /dev/nul
 else
    echo "No Jmeter Containers running"
 fi
@@ -70,7 +73,18 @@ cd /opt/softwareag/microgateway
     stage('Containerize') {
       steps {
         sh '''#Containerize Microservice
-docker build -t productservice:ci --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
+
+
+#if [ $GIT_BRANCH = "master" ]; then
+#   echo "Building for master"
+#   version=$GIT_COMMIT
+#else
+#   echo "CI Build"
+   version=ci
+#fi
+
+
+docker build -t productservice:$version --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
 '''
         sh '''#Containerize Microgateway
 cd /opt/softwareag/microgateway
