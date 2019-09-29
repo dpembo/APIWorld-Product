@@ -68,8 +68,13 @@ rm -rf jmeter
     stage('Build') {
       steps {
         echo 'Build Project'
-        sh '''echo ${userInput}
+        sh '''echo 1
+echo ${userInput}
+echo 2
 echo $userInput
+echo 3
+echo %userInput%
+echo 4
 #CompileTest Microservice
 echo "Compile Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn compile'''
