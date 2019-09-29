@@ -166,7 +166,7 @@ docker push apiworldref:5000/productmg:$VERSION'''
     stage('Release To Test') {
       agent {
         node {
-          label 'RefEnv'
+          label 'RefEnv-root'
         }
 
       }
@@ -189,7 +189,7 @@ kubectl apply -f k8s-services.yml'''
     stage('Release To Production') {
       agent {
         node {
-          label 'RefEnv'
+          label 'RefEnv-root'
         }
 
       }
