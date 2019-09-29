@@ -178,7 +178,12 @@ docker push apiworldref:5000/productmg:$VERSION'''
       }
       steps {
         echo 'Release to test'
-        sh 'uname -a'
+        sh '''#Inject the version                                            
+sed -i \'s/latest/$VERSION/g\' k8s-deployment.yml
+
+#Register the K8S deployment
+kubectl apply -f k8s-deployment.yml
+kubectl apply -f k8s-services.yml'''
       }
     }
     stage('Release To Production') {
