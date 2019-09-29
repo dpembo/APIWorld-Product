@@ -16,6 +16,10 @@ public class ProductItem {
         this.productDescription = productDescription;
     }
 
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
     public Integer getId(){
         return id;
     }

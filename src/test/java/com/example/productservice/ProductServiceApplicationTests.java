@@ -12,6 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import junit.framework.Assert;
 import java.net.URISyntaxException;
+import java.util.List;
+
 import com.example.productservice.ProductServiceApplication;
 
 @RunWith(SpringRunner.class)
@@ -33,8 +35,9 @@ public class ProductServiceApplicationTests {
         //Assert.assertEquals(true, result.getBody().contains("productName"));
 
         ProductServiceApplication productServiceApplication = new ProductServiceApplication();
-        ProductItem prod = productServiceApplication.product("1");
-        
+        List<ProductItem> prodList = productServiceApplication.product("1");
+        ProductItem prod = prodList.get(0);
+
         Assert.assertEquals("foo", prod.getProductName());
     }
 
