@@ -2,8 +2,10 @@ pipeline {
   agent any
   stages {
     stage('Setup') {
-      steps {
-        sh '''#!/bin/bash
+      parallel {
+        stage('Setup') {
+          steps {
+            sh '''#!/bin/bash
 
 export VERSION="0.0.0CI"
 echo ---------------------------------------------------------------------------
@@ -19,7 +21,7 @@ echo "GIT_COMMIT : $GIT_COMMIT"
 echo "GIT_BRANCH : $GIT_BRANCH"
 echo ---------------------------------------------------------------------------
 '''
-        sh '''echo "Clean Microservice Containers"
+            sh '''echo "Clean Microservice Containers"
 
 #docker ps -a | grep productservice: |  cut -d" " -f1
 
@@ -53,6 +55,14 @@ rm -rf target
 rm -rf jmeter
 
 '''
+          }
+        }
+        stage('Get Version Number') {
+          steps {
+            echo 'Get Version Number'
+            load 'versionInput.groovy'
+          }
+        }
       }
     }
     stage('Build') {
