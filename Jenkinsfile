@@ -20,10 +20,10 @@ echo "GIT_BRANCH : $GIT_BRANCH"
 echo ---------------------------------------------------------------------------
 '''
         sh '''echo "Clean Microservice Containers"
-runningCount=`docker ps -a -q --filter ancestor=productservice:0 | wc -l`
+runningCount=`docker ps -a -q --filter ancestor=productservice:ci | wc -l`
 
 if [ $runningCount -gt 0 ]; then
-   docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}") > /dev/nul
+   docker stop $(docker ps -a -q --filter ancestor=productservice:ci --format="{{.ID}}") > /dev/nul
 else
    echo "No MS Containers running"
 fi
@@ -40,7 +40,7 @@ sleep 1
 runningCount=`docker ps -a -q --filter ancestor=jmeter:latest | wc -l`
 
 if [ $runningCount -gt 0 ]; then
-   docker stop $(docker ps -a -q --filter ancestor=productservice:0 --format="{{.ID}}") > /dev/nul
+   docker stop $(docker ps -a -q --filter ancestor=jmeter:latest --format="{{.ID}}") > /dev/nul
 else
    echo "No Jmeter Containers running"
 fi
