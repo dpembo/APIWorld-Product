@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ProducService
+  name: product-service-svc
 
 spec:
   # This defines which pods are going to be represented by this Service
