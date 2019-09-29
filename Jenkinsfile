@@ -68,7 +68,8 @@ rm -rf jmeter
     stage('Build') {
       steps {
         echo 'Build Project'
-        sh '''echo 1
+        sh '''echo $VERSION
+echo 1
 echo ${userInput}
 echo 2
 echo $userInput
