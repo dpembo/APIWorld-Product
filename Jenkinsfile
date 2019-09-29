@@ -84,7 +84,7 @@ else
 fi
 
 
-docker build -t productservice:ci --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
+docker build -t productservice:$version --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
 '''
         sh '''#Containerize Microgateway
 cd /opt/softwareag/microgateway
