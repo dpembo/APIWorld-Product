@@ -35,6 +35,7 @@ spec:
     spec:
       containers:
       - name: product-service-sidecar
+        imagePullPolicy: Always
         image: apiworldref:5000/productmg:latest
         ports:
         - containerPort: 9090       # must match the exposed port of the microgateway docker image
@@ -59,7 +60,8 @@ spec:
           timeoutSeconds: 5
           failureThreshold: 3
       - name: product-service
+        imagePullPolicy: Always
         image: apiworldref:5000/productservice:latest
         ports:
         - containerPort: 8090
-      imagePullPolicy: Always
+      
