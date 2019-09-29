@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: product-service-sidecar
-        image: apiworldref:5000/productmg
+        image: apiworldref:5000/productmg:latest
         ports:
         - containerPort: 9090       # must match the exposed port of the microgateway docker image
         livenessProbe:
