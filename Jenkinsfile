@@ -76,16 +76,13 @@ rm -rf jmeter
     stage('Build') {
       steps {
         echo 'Build Project'
-        sh '''echo $VERSION
-echo 1
-echo ${userInput}
-echo 2
-echo $userInput
-echo 3
-echo %userInput%
-echo 4
-echo !userInput!
-echo 5
+        sh '''if [[ -z "$VERSION" ]]; then
+   VERSION=ci
+fi
+
+echo Version is: $VERSION
+
+
 #CompileTest Microservice
 echo "Compile Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn compile'''
@@ -170,8 +167,8 @@ docker tag productservice:ci apiworldref:5000/productservice
 docker tag productmg:ci apiworldref:5000/productmg
 
 #second push 
-docker push apiworldref:5000/productservice
-docker push apiworldref:5000/productmg'''
+docker push apiworldref:5000/productservice:$VERSION
+docker push apiworldref:5000/productmg:$VERSION'''
       }
     }
     stage('Release To Test') {
