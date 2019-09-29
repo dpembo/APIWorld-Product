@@ -131,8 +131,13 @@ docker push apiworldref:5000/productservice
 docker push apiworldref:5000/productmg'''
       }
     }
-    
     stage('Release To Test') {
+      agent {
+        node {
+          label 'RefEnv'
+        }
+
+      }
       when {
         anyOf {
           branch 'staging'
@@ -141,23 +146,24 @@ docker push apiworldref:5000/productmg'''
       }
       steps {
         echo 'Release to test'
-        sh '''#push image to registry
-
-#First tag
-docker tag productservice:ci apiworldref:5000/productservice
-docker tag productmg:ci apiworldref:5000/productmg
-
-#second push 
-docker push apiworldref:5000/productservice
-docker push apiworldref:5000/productmg'''
+        sh 'uname -a'
       }
     }
     stage('Release To Production') {
+      agent {
+        node {
+          label 'RefEnv'
+        }
+
+      }
       when {
         branch 'master'
       }
       steps {
         echo 'Release to Prod'
+        sh '''uname -a
+docker run --rm --name productservicems -d -p 8090:8090 apiworldref:5000/productservice
+'''
       }
     }
     stage('Clean') {
