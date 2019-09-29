@@ -161,7 +161,9 @@ docker push apiworldref:5000/productmg'''
       }
       steps {
         echo 'Release to Prod'
-        sh 'uname -a'
+        sh '''uname -a
+docker run --rm --name productservicems -d -p 8090:8090 apiworldref:5000/productservice
+'''
       }
     }
     stage('Clean') {
