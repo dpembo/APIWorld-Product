@@ -102,7 +102,7 @@ cd /opt/softwareag/microgateway
 
 
 
-docker build -t productservice:$VERSION--build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
+docker build -t productservice:$VERSION --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
 #docker tag productservice:$VERSION productservice:$VERSION'''
         sh '''#Containerize Microgateway
 cd /opt/softwareag/microgateway
