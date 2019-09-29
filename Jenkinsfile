@@ -20,6 +20,9 @@ echo "GIT_BRANCH : $GIT_BRANCH"
 echo ---------------------------------------------------------------------------
 '''
         sh '''echo "Clean Microservice Containers"
+
+#docker ps -a | grep productservice: |  cut -d" " -f1
+
 runningCount=`docker ps -a -q --filter ancestor=productservice:ci | wc -l`
 
 if [ $runningCount -gt 0 ]; then
@@ -70,6 +73,17 @@ cd /opt/softwareag/microgateway
     stage('Containerize') {
       steps {
         sh '''#Containerize Microservice
+
+
+if [ $GIT_BRANCH = "master" ]; then
+   echo "Building for master"
+   version=$GIT_COMMIT
+else
+   echo "CI Build"
+   version=ci
+fi
+
+
 docker build -t productservice:ci --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
 '''
         sh '''#Containerize Microgateway
