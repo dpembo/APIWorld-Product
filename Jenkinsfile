@@ -171,8 +171,8 @@ docker push apiworldref:5000/productmg'''
         sh '''#Tidy up after build
 
 #Stop containers
-docker stop productmg
-docker stop productservicems
+#docker stop productmg
+#docker stop productservicems
 
 #Prune
 docker image prune -f
