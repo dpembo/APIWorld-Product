@@ -75,13 +75,13 @@ cd /opt/softwareag/microgateway
         sh '''#Containerize Microservice
 
 
-if [ $GIT_BRANCH = "master" ]; then
-   echo "Building for master"
-   version=$GIT_COMMIT
-else
-   echo "CI Build"
+#if [ $GIT_BRANCH = "master" ]; then
+#   echo "Building for master"
+#   version=$GIT_COMMIT
+#else
+#   echo "CI Build"
    version=ci
-fi
+#fi
 
 
 docker build -t productservice:$version --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
