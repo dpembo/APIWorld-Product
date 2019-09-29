@@ -198,8 +198,30 @@ kubectl apply -f k8s-services.yml'''
       }
       steps {
         echo 'Release to Prod'
-        sh '''uname -a
-#docker run --rm --name productservicems -d -p 8090:8090 apiworldref:5000/productservice
+        sh '''#Release into production
+
+deployActive=`kubectl get deployments.apps | grep product-service-deployment | wc -l`
+
+
+if [ $deployActive -gt 0 ]; then
+
+   echo "Perform Rolling Update"
+   #Do a rolling update
+   set image deployment.v1.apps/product-service-deployment product-service=apiworldref:5000/productservice:$VERSION
+   kubectl set image deployment.v1.apps/product-service-deployment product-service-sidecar=apiworldref:5000/productmg:$VERSION
+
+else
+   echo "NEW Deployment"
+   #Inject the version                                            
+   sed -i \'s/latest/$VERSION/g\' k8s-deployment.yml
+
+   #Register the K8S deployment
+   kubectl apply -f k8s-deployment.yml
+   kubectl apply -f k8s-services.yml
+fi
+
+
+
 '''
       }
     }
