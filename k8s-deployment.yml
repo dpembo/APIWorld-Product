@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: product-service-sidecar
-        image: madhavan/product-service-sidecar
+        image: apiworldref:5000/productmg
         ports:
         - containerPort: 9090       # must match the exposed port of the microgateway docker image
         livenessProbe:
@@ -56,6 +56,6 @@ spec:
           timeoutSeconds: 5
           failureThreshold: 3
       - name: product-service
-        image: madhavan/product-service
+        image: apiworldref:5000/productservice:latest
         ports:
         - containerPort: 8090
