@@ -155,12 +155,12 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
         sh '''#push image to registry
 
 #First tag
-docker tag productservice:$VERSION apiworldref:5000/productservice
-docker tag productmg:$VERSION apiworldref:5000/productmg
+docker tag productservice:$VERSION apiworldref:5000/productservice:$VERSION
+docker tag productmg:$VERSION apiworldref:5000/productmg:$VERSION
 
 #second push 
-docker push apiworldref:5000/productservice
-docker push apiworldref:5000/productmg'''
+docker push apiworldref:5000/productservice:$VERSION
+docker push apiworldref:5000/productmg:$VERSION'''
       }
     }
     stage('Release To Test') {
