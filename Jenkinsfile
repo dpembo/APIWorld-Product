@@ -61,7 +61,7 @@ rm -rf jmeter
           steps {
             echo 'Get Version Number'
             load 'versionInput.groovy'
-            buildName '${VERSION}'
+            buildName '$VERSION'
           }
         }
       }
