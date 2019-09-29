@@ -101,20 +101,12 @@ cd /opt/softwareag/microgateway
         sh '''#Containerize Microservice
 
 
-#if [ $GIT_BRANCH = "master" ]; then
-#   echo "Building for master"
-#   version=$GIT_COMMIT
-#else
-#   echo "CI Build"
-   version=ci
-#fi
 
-
-docker build -t productservice:$version --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
-'''
+docker build -t productservice:$VERSION--build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
+#docker tag productservice:$VERSION productservice:$VERSION'''
         sh '''#Containerize Microgateway
 cd /opt/softwareag/microgateway
-docker build -t productmg:ci .
+docker build -t productmg:$VERSION .
 '''
       }
     }
@@ -124,14 +116,14 @@ docker build -t productmg:ci .
           steps {
             sh '''#Run the container read for testing
 
-docker run --rm --name productservicems -d -p 8090:8090 productservice:ci
+docker run --rm --name productservicems -d -p 8090:8090 productservice:$VERSION
 '''
           }
         }
         stage('Start MicroGW') {
           steps {
             sh '''#Run MicroGateway Container
-docker run --rm --name productmg -d -p 9090:9090 productmg:ci
+docker run --rm --name productmg -d -p 9090:9090 productmg:$VERSION
 '''
           }
         }
@@ -163,12 +155,12 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
         sh '''#push image to registry
 
 #First tag
-docker tag productservice:ci apiworldref:5000/productservice
-docker tag productmg:ci apiworldref:5000/productmg
+docker tag productservice:$VERSION apiworldref:5000/productservice
+docker tag productmg:$VERSION apiworldref:5000/productmg
 
 #second push 
-docker push apiworldref:5000/productservice:$VERSION
-docker push apiworldref:5000/productmg:$VERSION'''
+docker push apiworldref:5000/productservice
+docker push apiworldref:5000/productmg'''
       }
     }
     stage('Release To Test') {
