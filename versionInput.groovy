@@ -1,5 +1,5 @@
 
-if(env.GIT_BRANCH!="developmen")
+if(env.GIT_BRANCH!="development")
 {
     userInput = input(
     id: 'Version Required', message: 'Please provide version number', parameters: [
