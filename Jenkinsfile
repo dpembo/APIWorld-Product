@@ -151,7 +151,8 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
         stage('Interface Test') {
           steps {
             echo 'Test Microservice'
-            sh '''test=`curl -s http://localhost:8090/product/1 | grep foo | wc -l`
+            sh '''#Test Microservice
+test=`curl -s http://apiworldbuild:8090/product/1 | grep foo | wc -l`
 
 
 if [ $test -gt 0 ]; then
@@ -163,7 +164,7 @@ fi'''
             echo 'Test Gateway'
             sh '''#Test Gateway
 
-test=`curl -s http://localhost:9090/gateway/Product/1.0/product/1 | grep foo | wc -l`
+test=`curl -s http://apiworldbuild:9090/gateway/Product/1.0/product/1 | grep foo | wc -l`
 
 
 if [ $test -gt 0 ]; then
