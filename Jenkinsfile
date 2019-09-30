@@ -152,6 +152,7 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
           steps {
             echo 'Test Microservice'
             sh '''#Test Microservice
+curl http://apiworldbuild:8090/product/1
 test=`curl -s http://apiworldbuild:8090/product/1 | grep foo | wc -l`
 
 
