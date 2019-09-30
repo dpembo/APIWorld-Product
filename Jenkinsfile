@@ -293,6 +293,8 @@ docker volume prune -f
     always {
       junit 'target/surefire-reports/**/*.xml'
       perfReport(sourceDataFiles: 'jmeter/result.jtl', compareBuildPrevious: true, errorUnstableResponseTimeThreshold: '5000')
+      archiveArtifacts artifacts: 'jmeter/result.*', fingerprint: true
+      archiveArtifacts artifacts: 'jmeter/output/**/*.*', fingerprint: true
     }
   }
 }
