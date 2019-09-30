@@ -151,7 +151,7 @@ docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2"
         stage('Interface Test') {
           steps {
             echo 'Test Microservice'
-            sh '''test=`http://localhost:8090/product/1 | grep foo | wc -l`
+            sh '''test=`curl -s http://localhost:8090/product/1 | grep foo | wc -l`
 
 
 if [ $test -gt 0 ]; then
