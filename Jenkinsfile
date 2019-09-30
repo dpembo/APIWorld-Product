@@ -58,13 +58,6 @@ rm -rf jmeter
           }
         }
         stage('Get Version Number') {
-          /*when {
-            anyOf {
-              branch 'staging'
-              branch 'master'
-            }
-
-          }*/
           steps {
             echo 'Get Version Number'
             load 'versionInput.groovy'
@@ -196,6 +189,13 @@ fi'''
       }
     }
     stage('Register Images') {
+      when {
+        anyOf {
+          branch 'staging'
+          branch 'master'
+        }
+
+      }
       steps {
         sh '''#push image to registry
 
@@ -288,12 +288,13 @@ docker volume prune -f
       }
     }
   }
-
   post {
     always {
       junit 'target/surefire-reports/**/*.xml'
       perfReport(sourceDataFiles: 'jmeter/result.jtl', compareBuildPrevious: true, errorUnstableResponseTimeThreshold: '5000')
-      archiveArtifacts artifacts: 'jmeter/result.*', fingerprint: true
+      archiveArtifacts(artifacts: 'jmeter/result.*', fingerprint: true)
+
     }
+
   }
 }
