@@ -129,6 +129,13 @@ sleep 30'''
         }
       }
     }
+    stage('Test Operational') {
+      steps {
+        sh '''#Are services operational
+
+'''
+      }
+    }
     stage('Testing') {
       parallel {
         stage('Load Test') {
@@ -266,13 +273,6 @@ fi
 #Prune
 docker image prune -f
 docker volume prune -f
-
-'''
-      }
-    }
-    stage('Test Operational') {
-      steps {
-        sh '''#Are services operational
 
 '''
       }
