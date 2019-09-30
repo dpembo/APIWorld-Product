@@ -270,5 +270,12 @@ docker volume prune -f
 '''
       }
     }
+    stage('Test Operational') {
+      steps {
+        sh '''#Are services operational
+
+'''
+      }
+    }
   }
 }
