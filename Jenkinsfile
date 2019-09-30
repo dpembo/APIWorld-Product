@@ -123,7 +123,7 @@ docker run --rm --name productservicems -d -p 8090:8090 productservice:$VERSION
         stage('Start MicroGW') {
           steps {
             sh '''#Run MicroGateway Container
-docker run --rm --name productmg -d -p 9090:9090 productmg:$VERSION
+docker run --rm --name productmg -d -p 9090:9090 --net=host productmg:$VERSION
 '''
           }
         }
@@ -148,9 +148,35 @@ echo "Unit Test Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn test'''
           }
         }
+        stage('Interface Test') {
+          steps {
+            echo 'Test Microservice'
+            sh '''test=`http://localhost:8090/product/1 | grep foo | wc -l`
+
+
+if [ $test -gt 0 ]; then
+   echo "Test Passed"
+else
+   echo "Error in interface test for MicroService"
+   exit 1
+fi'''
+            echo 'Test Gateway'
+            sh '''#Test Gateway
+
+test=`curl -s http://localhost:9090/gateway/Product/1.0/product/1 | grep foo | wc -l`
+
+
+if [ $test -gt 0 ]; then
+   echo "Test Passed"
+else
+   echo "Error in interface test for MicroGateway"
+   exit 1
+fi'''
+          }
+        }
       }
     }
-    stage('Register Cntrs') {
+    stage('Register Images') {
       steps {
         sh '''#push image to registry
 
