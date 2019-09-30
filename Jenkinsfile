@@ -124,7 +124,7 @@ docker run --rm --name productservicems -d -p 8090:8090 productservice:$VERSION
           steps {
             sh '''#Run MicroGateway Container
 docker run --rm --name productmg -d -p 9090:9090 --net=host productmg:$VERSION
-'''
+sleep 30'''
           }
         }
       }
