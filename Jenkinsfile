@@ -58,13 +58,13 @@ rm -rf jmeter
           }
         }
         stage('Get Version Number') {
-          when {
+          /*when {
             anyOf {
               branch 'staging'
               branch 'master'
             }
 
-          }
+          }*/
           steps {
             echo 'Get Version Number'
             load 'versionInput.groovy'
