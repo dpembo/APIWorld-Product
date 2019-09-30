@@ -189,6 +189,13 @@ fi'''
       }
     }
     stage('Register Images') {
+      when {
+        anyOf {
+          branch 'staging'
+          branch 'master'
+        }
+
+      }
       steps {
         sh '''#push image to registry
 
