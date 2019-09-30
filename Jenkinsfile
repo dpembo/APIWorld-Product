@@ -288,4 +288,11 @@ docker volume prune -f
       }
     }
   }
+
+  post {
+    always {
+      junit 'target/surefire-reports/**/*.xml'
+      perfReport(sourceDataFiles: 'jmeter/result.jtl', compareBuildPrevious: true, errorUnstableResponseTimeThreshold: '5000')
+    }
+  }
 }
