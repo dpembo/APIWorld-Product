@@ -130,10 +130,21 @@ sleep 30'''
       }
     }
     stage('Test Operational') {
-      steps {
-        sh '''#Are services operational
+      parallel {
+        stage('Test MicroSvc Operational') {
+          steps {
+            sh '''#Are services operational
 
+timeout 60 bash -c \'while [[ "$(curl -s -o /dev/null -w \'\'%{http_code}\'\' localhost:8090/product)" != "200" ]]; do sleep 5; done\' || false
 '''
+          }
+        }
+        stage('Test MicroGW Operational') {
+          steps {
+            sh '''#Is MicroGW Operational
+timeout 60 bash -c \'while [[ "$(curl -s -o /dev/null -w \'\'%{http_code}\'\' localhost:9090/gateway/Product/1.0/product)" != "200" ]]; do sleep 5; done\' || false'''
+          }
+        }
       }
     }
     stage('Testing') {
