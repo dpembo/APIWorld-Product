@@ -77,8 +77,7 @@ public class ProductServiceApplication {
      * @return
      */
     @PostMapping("/product")
-    public boolean insertProduct(@RequestBody ProductItem newProduct)
-    {
+    public boolean insertProduct(@RequestBody ProductItem newProduct){
         //System.out.println(newProduct);
         //Get a new ID
         int id = getProductItems().size() + 1;
