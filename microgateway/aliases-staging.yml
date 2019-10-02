@@ -1,4 +1,0 @@
-aliases:
-  MicroServiceAlias:
-    type: simple
-    value: http://localhost:8090

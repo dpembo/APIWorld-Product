@@ -1,4 +1,0 @@
-aliases:
-  MicroServiceAlias:
-    type: simple
-    value: http://apiworldbuild:8090
