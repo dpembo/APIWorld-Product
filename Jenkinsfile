@@ -77,9 +77,29 @@ echo "Package the Microservice"
 docker run --rm --name service-maven -v "$PWD":/usr/share/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD"/target:/usr/share/mymaven/target -w /usr/share/mymaven maven:3.6-jdk-8 mvn package'''
         sh '''echo "Move Package for Docker Build"
 cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar'''
+        sh '''#Modify Alias depending on stage
+
+if [ $GIT_BRANCH = "staging" ]; then
+   sudo sed -i \'s/\\[gateway\\]/apiworldref\\:5555/g\' $WORKSPACE/microgateway/config.yml
+   sudo sed -i \'s/\\[microservice\\]/localhost\\:8090/g\' $WORKSPACE/microgateway/config.yml
+   exit
+fi
+
+if [ $GIT_BRANCH = "master" ]; then
+   sudo sed -i \'s/\\[gateway\\]/apiworldref\\:5555/g\' $WORKSPACE/microgateway/config.yml
+   sudo sed -i \'s/\\[microservice\\]/localhost\\:8090/g\' $WORKSPACE/microgateway/config.yml   
+   exit
+fi
+
+#Else assume its a development branch and set accordingly
+
+sudo sed -i \'s/\\[gateway\\]/apiworldbuild\\:5555/g\' $WORKSPACE/microgateway/config.yml
+sudo sed -i \'s/\\[microservice\\]/apiworldbuild\\:8090/g\' $WORKSPACE/microgateway/config.yml
+
+'''
         sh '''#Build MicroGateway
 cd /opt/softwareag/microgateway
-./microgateway.sh createDockerFile --docker_dir . -p 9090 -a $WORKSPACE/microgateway/Product.zip -dof ./Dockerfile -c $WORKSPACE/microgateway/aliases-$GIT_BRANCH.yml'''
+./microgateway.sh createDockerFile --docker_dir . -p 9090 -a $WORKSPACE/microgateway/Product.zip -dof ./Dockerfile -c $WORKSPACE/microgateway/config.yml'''
       }
     }
     stage('Containerize') {
