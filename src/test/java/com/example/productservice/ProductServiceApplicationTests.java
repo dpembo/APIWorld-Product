@@ -26,14 +26,7 @@ public class ProductServiceApplicationTests {
         Assert.assertEquals("foo", prod.getProductName());
     }
 
-    @Test
-    public void testProductCount()
-    {
-        ProductServiceApplication productServiceApplication = new ProductServiceApplication();
-        int count = productServiceApplication.count();
-        Assert.assertEquals(count, 4);
-    }
-
+  
     @Test
     public void testProductList() throws URISyntaxException
     {
