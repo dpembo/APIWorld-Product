@@ -59,6 +59,12 @@ public class ProductServiceApplication {
         return new ArrayList<ProductItem>(getProductItems().values());
     }
 
+    @GetMapping("/productcount")
+    public int count(){
+        return productList.size();
+    }
+
+
     @GetMapping("/product/{id}")
     public List<ProductItem> product(@PathVariable(value="id") String id){
 
