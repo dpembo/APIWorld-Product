@@ -51,11 +51,6 @@ public class ProductServiceApplication {
         return "Hello from product service.  Try /product resource";
     }
 
-    @GetMapping("/product/count")
-    public int count(){
-        return productList.size();
-    }
-
     @GetMapping("/product")
     public List<ProductItem> product(){
 
