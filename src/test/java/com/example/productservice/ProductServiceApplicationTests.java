@@ -15,13 +15,6 @@ import com.example.productservice.ProductServiceApplication;
 @SpringBootTest
 public class ProductServiceApplicationTests {
  
-    @Test
-    public void testProductCount()
-    {
-        ProductServiceApplication productServiceApplication = new ProductServiceApplication();
-        int count = productServiceApplication.count();
-        Assert.assertEquals(count, 4);
-    }
 
     @Test
     public void testGetSingleProduct() throws URISyntaxException
