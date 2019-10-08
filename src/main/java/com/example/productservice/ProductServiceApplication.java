@@ -59,6 +59,8 @@ public class ProductServiceApplication {
         return new ArrayList<ProductItem>(getProductItems().values());
     }
 
+
+
   
     @GetMapping("/product/{id}")
     public List<ProductItem> product(@PathVariable(value="id") String id){

@@ -37,6 +37,8 @@ public class ProductServiceApplicationTests {
         Assert.assertEquals(true, prodList.size()>0);
     }
 
+ 
+
     @Test
     public void addProduct() throws URISyntaxException
     {
