@@ -37,7 +37,14 @@ public class ProductServiceApplicationTests {
         Assert.assertEquals(true, prodList.size()>0);
     }
 
- 
+    @Test
+    public void testProductCount() throws URISyntaxException
+    {
+        ProductServiceApplication productServiceApplication = new ProductServiceApplication();
+        List<ProductItem> prodList = productServiceApplication.product();
+        int count =productServiceApplication.productCount();
+        Assert.assertEquals(count,prodList.size());   
+    }
 
     @Test
     public void addProduct() throws URISyntaxException
