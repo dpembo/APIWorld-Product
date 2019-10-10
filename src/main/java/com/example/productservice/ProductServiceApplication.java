@@ -59,7 +59,11 @@ public class ProductServiceApplication {
         return new ArrayList<ProductItem>(getProductItems().values());
     }
 
-
+    @GetMapping("/productcount")
+    public int productCount(){
+        if(getProductItems()==null||getProductItems().isEmpty())populateProductList();
+        return getProductItems().size();
+    }    
 
   
     @GetMapping("/product/{id}")
