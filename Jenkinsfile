@@ -11,9 +11,6 @@ podTemplate(
         containerTemplate(
             name: 'docker', 
             image: 'docker:18.02',
-            securityContext:
-              runAsUser: 0
-              fsGroup: 0
             ttyEnabled: true,
             command: 'cat'
         )
