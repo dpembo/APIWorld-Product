@@ -66,7 +66,7 @@ pipeline {
               echo "Package the Microservice"
               sh 'mvn package'
               sh '''
-sh '''#Modify Alias depending on stage
+#Modify Alias depending on stage
 
 if [ $GIT_BRANCH = "staging" ]; then
    sudo sed -i \'s/\\[gateway\\]/apiworldref\\:5555/g\' microgateway/config.yml
