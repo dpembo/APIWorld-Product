@@ -65,6 +65,27 @@ pipeline {
               sh 'mvn compile'
               echo "Package the Microservice"
               sh 'mvn package'
+              sh '''
+sh '''#Modify Alias depending on stage
+
+if [ $GIT_BRANCH = "staging" ]; then
+   sudo sed -i \'s/\\[gateway\\]/apiworldref\\:5555/g\' microgateway/config.yml
+   sudo sed -i \'s/\\[microservice\\]/localhost\\:8090/g\' microgateway/config.yml
+   exit
+fi
+
+if [ $GIT_BRANCH = "master" ]; then
+   sudo sed -i \'s/\\[gateway\\]/apiworldref\\:5555/g\' microgateway/config.yml
+   sudo sed -i \'s/\\[microservice\\]/localhost\\:8090/g\' microgateway/config.yml   
+   exit
+fi
+
+#Else assume its a development branch and set accordingly
+
+sudo sed -i \'s/\\[gateway\\]/apiworldbuild\\:5555/g\' microgateway/config.yml
+sudo sed -i \'s/\\[microservice\\]/apiworldbuild\\:8090/g\' microgateway/config.yml
+
+'''
             }
           }
         }
