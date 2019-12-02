@@ -1,3 +1,5 @@
+def label = "mypod-${UUID.randomUUID().toString()}"
+def commitId
 pipeline {
   agent {
     kubernetes {
@@ -45,7 +47,6 @@ pipeline {
     }
   }
   stages {
-        def commitId
         stage('Checkout') {
             steps {
                 checkout scm
