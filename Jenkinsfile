@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label podlabel
+      label 'myPod'
       yaml """
   kind: Pod
   metadata:
@@ -12,6 +12,10 @@ pipeline {
       runAsUser: 1724
       fsGroup: 1724
     containers:
+    - name: jnlp
+      env:
+      - name: CONTAINER_ENV_VAR
+        value: jnlp
     - name: maven
       image: maven:3.3.9-jdk-8-alpine
       command:
