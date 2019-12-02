@@ -52,7 +52,7 @@ pipeline {
           }
         }
         stage('Build') {
-          steps {
+          container('maven') {
             echo 'Build Project'
             sh '''
 if [[ -z "$VERSION" ]]; then
