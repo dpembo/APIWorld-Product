@@ -49,10 +49,10 @@ podTemplate(
         }
       }
       stage('Build') {
-        container ('maven') {
         steps {
-          echo 'Build Project'
-          sh '''if [[ -z "$VERSION" ]]; then
+          container ('maven') {
+            echo 'Build Project'
+            sh '''if [[ -z "$VERSION" ]]; then
   VERSION=ci
 fi
 echo Version is: $VERSION
@@ -62,8 +62,8 @@ echo "Compile Microservice"
 mvn compile
 mvn package
 '''
+          }
         }
       }
     }
-  }
 }
