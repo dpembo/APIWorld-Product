@@ -52,6 +52,23 @@ pipeline {
 
             }
         }
+        stage('Build') {
+          steps {
+            echo 'Build Project'
+            sh '''
+if [[ -z "$VERSION" ]]; then
+   VERSION=ci
+fi
+'''
+            echo Version is: $VERSION
+            #CompileTest Microservice
+            echo "Compile Microservice"
+            sh 'mvn compile'
+            #Package the microservice
+            echo "Package the Microservice"
+            sh 'mvn package'
+          }
+        }
         stage('Parallel Stage') {
             when {
                 branch 'master'
