@@ -45,9 +45,10 @@ pipeline {
     }
   }
   stages {
-        stage('Non-Parallel Stage') {
+        def commitId
+        stage('Checkout') {
             steps {
-                echo 'This stage will be executed first.'
+                checkout scm
             }
         }
         stage('Parallel Stage') {
