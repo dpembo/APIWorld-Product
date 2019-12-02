@@ -1,7 +1,46 @@
 pipeline {
-  agent any
+  agent {
+    kubernetes {
+      label podlabel
+      yaml """
+  kind: Pod
+  metadata:
+    labels:
+      app: test
+  spec:
+    securityContext:
+      runAsUser: 1724
+      fsGroup: 1724
+    containers:
+    - name: maven
+      image: maven:3.3.9-jdk-8-alpine
+      command:
+      - cat
+      tty: true
+    - name: docker
+      image: docker:18.02
+      securityContext:
+        runAsUser: 0
+        fsGroup: 0
+      command:
+      - cat
+      tty: true
+      volumeMounts:
+      - mountPath: /var/run/docker.sock
+        name: docker-sock-volume
+    volumes:
+    - name: docker-sock-volume
+      hostPath:
+        # location on host
+        path: /var/run/docker.sock
+        # this field is optional
+        type: File
+    imagePullSecrets:
+    - name: regcred
+  """
+    }
+  }
   stages {
-
         stage('Non-Parallel Stage') {
             steps {
                 echo 'This stage will be executed first.'
@@ -14,25 +53,16 @@ pipeline {
             failFast true
             parallel {
                 stage('Branch A') {
-                    agent {
-                        label "for-branch-a"
-                    }
                     steps {
                         echo "On Branch A"
                     }
                 }
                 stage('Branch B') {
-                    agent {
-                        label "for-branch-b"
-                    }
                     steps {
                         echo "On Branch B"
                     }
                 }
                 stage('Branch C') {
-                    agent {
-                        label "for-branch-c"
-                    }
                     stages {
                         stage('Nested 1') {
                             steps {
