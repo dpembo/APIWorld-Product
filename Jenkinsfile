@@ -1,5 +1,4 @@
 pipeline {
-  def commitId
   agent {
     kubernetes {
       label 'myPod'
