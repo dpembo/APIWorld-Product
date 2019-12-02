@@ -1,6 +1,5 @@
-def label = "mypod-${UUID.randomUUID().toString()}"
-def commitId
 pipeline {
+  def commitId
   agent {
     kubernetes {
       label 'myPod'
