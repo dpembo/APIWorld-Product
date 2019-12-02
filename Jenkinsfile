@@ -52,18 +52,20 @@ pipeline {
           }
         }
         stage('Build') {
-          container('maven') {
-            echo 'Build Project'
-            sh '''
-if [[ -z "$VERSION" ]]; then
-   VERSION=ci
-fi
-echo Version is: $VERSION
-'''
-            echo "Compile Microservice"
-            sh 'mvn compile'
-            echo "Package the Microservice"
-            sh 'mvn package'
+          steps {
+            container('maven') {
+              echo 'Build Project'
+              sh '''
+  if [[ -z "$VERSION" ]]; then
+    VERSION=ci
+  fi
+  echo Version is: $VERSION
+  '''
+              echo "Compile Microservice"
+              sh 'mvn compile'
+              echo "Package the Microservice"
+              sh 'mvn package'
+            }
           }
         }
         stage('Parallel Stage') {
