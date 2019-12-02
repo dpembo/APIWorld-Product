@@ -17,6 +17,7 @@ podTemplate(
     ]
 ) {
     node('mypod') {
+      container ('maven') { 
         stage('Setup') {
           parallel {
             stage('Setup') {
@@ -67,4 +68,5 @@ podTemplate(
         }
       }
     }
+  }
 }
