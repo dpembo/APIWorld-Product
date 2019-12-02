@@ -39,29 +39,29 @@ echo ---------------------------------------------------------------------------
               sh '''echo "Clean Microservice Containers"
 '''
             }
-          }
-          stage('Get Version Number') {
-            steps {
-              echo 'Get Version Number'
-              load 'versionInput.groovy'
+            stage('Get Version Number') {
+              steps {
+                echo 'Get Version Number'
+                load 'versionInput.groovy'
+              }
             }
           }
         }
-      }
-      stage('Build') {
-        container ('maven') {
-        steps {
-          echo 'Build Project'
-          sh '''if [[ -z "$VERSION" ]]; then
-   VERSION=ci
-fi
-echo Version is: $VERSION
+        stage('Build') {
+          container ('maven') {
+          steps {
+            echo 'Build Project'
+            sh '''if [[ -z "$VERSION" ]]; then
+    VERSION=ci
+  fi
+  echo Version is: $VERSION
 
-#CompileTest Microservice
-echo "Compile Microservice"
-mvn compile
-mvn package
-'''
+  #CompileTest Microservice
+  echo "Compile Microservice"
+  mvn compile
+  mvn package
+  '''
+          }
         }
       }
     }
