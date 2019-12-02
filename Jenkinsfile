@@ -46,11 +46,10 @@ pipeline {
   }
   stages {
         stage('Checkout') {
-            steps {
-                echo "Chekout"
-                echo sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-
-            }
+          steps {
+            echo "Chekout"
+            echo sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+          }
         }
         stage('Build') {
           steps {
@@ -59,12 +58,10 @@ pipeline {
 if [[ -z "$VERSION" ]]; then
    VERSION=ci
 fi
+echo Version is: $VERSION
 '''
-            echo Version is: $VERSION
-            #CompileTest Microservice
             echo "Compile Microservice"
             sh 'mvn compile'
-            #Package the microservice
             echo "Package the Microservice"
             sh 'mvn package'
           }
