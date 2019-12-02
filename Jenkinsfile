@@ -20,24 +20,26 @@ podTemplate(
         stage('Setup') {
           parallel {
             stage('Setup') {
-              sh '''#!/bin/bash
+              steps {
+                sh '''#!/bin/bash
 
-export VERSION="0.0.0CI"
-echo ---------------------------------------------------------------------------
-echo Build Information
-echo ---------------------------------------------------------------------------
-echo "Working on : $JOB_NAME"
-echo "Workspace  : $WORKSPACE" 
-echo "Revision   : $SVN_REVISION"
-echo "Build      : $BUILD_NUMBER"
-echo "Deploy to  : $DEPLOY_TO"
-echo ---------------------------------------------------------------------------
-echo "GIT_COMMIT : $GIT_COMMIT" 
-echo "GIT_BRANCH : $GIT_BRANCH"
-echo ---------------------------------------------------------------------------
-'''
-              sh '''echo "Clean Microservice Containers"
-'''
+  export VERSION="0.0.0CI"
+  echo ---------------------------------------------------------------------------
+  echo Build Information
+  echo ---------------------------------------------------------------------------
+  echo "Working on : $JOB_NAME"
+  echo "Workspace  : $WORKSPACE" 
+  echo "Revision   : $SVN_REVISION"
+  echo "Build      : $BUILD_NUMBER"
+  echo "Deploy to  : $DEPLOY_TO"
+  echo ---------------------------------------------------------------------------
+  echo "GIT_COMMIT : $GIT_COMMIT" 
+  echo "GIT_BRANCH : $GIT_BRANCH"
+  echo ---------------------------------------------------------------------------
+  '''
+                sh '''echo "Clean Microservice Containers"
+  '''
+              }
             }
             stage('Get Version Number') {
               steps {
