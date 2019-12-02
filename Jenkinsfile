@@ -1,28 +1,19 @@
-podTemplate(
-    label: 'mypod', 
-    inheritFrom: 'default',
-    containers: [
-        containerTemplate(
-            name: 'maven', 
-            image: 'maven:3.6-jdk-8',
-            ttyEnabled: true,
-            command: 'cat'
-        ),
-        containerTemplate(
-            name: 'docker', 
-            image: 'docker:18.02',
-            ttyEnabled: true,
-            command: 'cat'
-        )
-    ],
-    volumes: [
-        hostPathVolume(
-            hostPath: '/var/run/docker.sock',
-            mountPath: '/var/run/docker.sock'
-        )
-    ]
-) {
-    node('mypod') {
+pipeline {
+  agent {
+    kubernetes {
+      containerTemplate {
+        name 'maven'
+        image 'maven:3.3.9-jdk-8-alpine'
+        ttyEnabled true
+        command 'cat'
+      }
+    }
+  }
+  environment {
+    CONTAINER_ENV_VAR = 'container-env-var-value'
+  }
+  stages {
+
         stage('Non-Parallel Stage') {
             steps {
                 echo 'This stage will be executed first.'
