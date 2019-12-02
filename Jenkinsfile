@@ -17,13 +17,10 @@ podTemplate(
     ]
 ) {
     node('mypod') {
-      container ('maven') { 
-        stage('Setup') {
-          parallel {
-            stage('Setup') {
-              steps {
-                sh '''#!/bin/bash
-
+      stage('Setup') {
+        parallel {
+          stage('Setup') {
+            sh '''#!/bin/bash
   export VERSION="0.0.0CI"
   echo ---------------------------------------------------------------------------
   echo Build Information
@@ -38,15 +35,12 @@ podTemplate(
   echo "GIT_BRANCH : $GIT_BRANCH"
   echo ---------------------------------------------------------------------------
   '''
-                sh '''echo "Clean Microservice Containers"
+            sh '''echo "Clean Microservice Containers"
   '''
-              }
             }
             stage('Get Version Number') {
-              steps {
-                echo 'Get Version Number'
-                load 'versionInput.groovy'
-              }
+              echo 'Get Version Number'
+              load 'versionInput.groovy'
             }
           }
         }
