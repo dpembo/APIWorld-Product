@@ -7,6 +7,15 @@ podTemplate(
             image: 'maven:3.6-jdk-8',
             ttyEnabled: true,
             command: 'cat'
+        ),
+        containerTemplate(
+            name: 'docker', 
+            image: 'docker:18.02',
+            securityContext:
+              runAsUser: 0
+              fsGroup: 0
+            ttyEnabled: true,
+            command: 'cat'
         )
     ],
     volumes: [
@@ -21,23 +30,7 @@ podTemplate(
         parallel {
           stage('Setup') {
             steps {
-              sh '''#!/bin/bash
-    export VERSION="0.0.0CI"
-    echo ---------------------------------------------------------------------------
-    echo Build Information
-    echo ---------------------------------------------------------------------------
-    echo "Working on : $JOB_NAME"
-    echo "Workspace  : $WORKSPACE" 
-    echo "Revision   : $SVN_REVISION"
-    echo "Build      : $BUILD_NUMBER"
-    echo "Deploy to  : $DEPLOY_TO"
-    echo ---------------------------------------------------------------------------
-    echo "GIT_COMMIT : $GIT_COMMIT" 
-    echo "GIT_BRANCH : $GIT_BRANCH"
-    echo ---------------------------------------------------------------------------
-    '''
-              sh '''echo "Clean Microservice Containers"
-    '''
+              echo 'Clean Microservice Containers'
             }
           }
           stage('Get Version Number') {
@@ -45,23 +38,6 @@ podTemplate(
               echo 'Get Version Number'
               load 'versionInput.groovy'
             }
-          }
-        }
-      }
-      stage('Build') {
-        steps {
-          container ('maven') {
-            echo 'Build Project'
-            sh '''if [[ -z "$VERSION" ]]; then
-  VERSION=ci
-fi
-echo Version is: $VERSION
-
-#CompileTest Microservice
-echo "Compile Microservice"
-mvn compile
-mvn package
-'''
           }
         }
       }
