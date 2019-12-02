@@ -47,9 +47,9 @@ pipeline {
   stages {
         stage('Checkout') {
             steps {
-                checkout scm
-                def commitId
-                commitId = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                echo "Chekout"
+                echo sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+
             }
         }
         stage('Parallel Stage') {
