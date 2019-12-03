@@ -47,6 +47,10 @@ pipeline {
   }
   stages {
         stage('Setup') {
+          when {
+              branch 'master'
+          }
+          failFast true
           parallel {
             stage('Checkout') {
               steps {
