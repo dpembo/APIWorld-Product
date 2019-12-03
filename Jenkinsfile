@@ -12,10 +12,11 @@ pipeline {
       runAsUser: 1724
       fsGroup: 1724
     containers:
-    - name: jnlp
-      env:
-      - name: CONTAINER_ENV_VAR
-        value: jnlp
+    - name: mg-jenkins
+      image: docker.devopsinitiative.com/mg-jenkins:10.5
+      command:
+      - cat
+      tty: true
     - name: maven
       image: maven:3.3.9-jdk-8-alpine
       command:
