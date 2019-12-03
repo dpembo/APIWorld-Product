@@ -46,7 +46,7 @@ pipeline {
     }
   }
   stages {
-        stage('Parallel Stage') {
+        stage('Startup') {
             when {
                 branch 'master'
             }
