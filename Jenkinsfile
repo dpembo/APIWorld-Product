@@ -46,11 +46,25 @@ pipeline {
     }
   }
   stages {
+        stage('Parallel Stage') {
+            when {
+                branch 'master'
+            }
+            failFast true
+            parallel {
+                stage('Branch A') {
+                    steps {
+                        echo "On Branch A"
+                    }
+                }
+                stage('Branch B') {
+                    steps {
+                        echo "On Branch B"
+                    }
+                }
+            }
+        }
         stage('Setup') {
-          when {
-              branch 'master'
-          }
-          failFast true
           parallel {
             stage('Checkout') {
               steps {
