@@ -102,7 +102,7 @@ sed -i \'s/\\[microservice\\]/apiworldbuild\\:8090/g\' microgateway/config.yml
             }
           }
         }
-        stage('Build') {
+        stage('Microgateway build') {
           steps {
             container('mg-jenkins') {
               echo 'Build Project'
