@@ -52,14 +52,16 @@ pipeline {
             }
             failFast true
             parallel {
-                stage('Branch A') {
+                stage('Checkout') {
                     steps {
-                        echo "On Branch A"
+                        echo "Chekout"
+                        echo sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     }
                 }
-                stage('Branch B') {
+                stage('Get Version Number') {
                     steps {
-                        echo "On Branch B"
+                        echo 'Get Version Number'
+                        load 'versionInput.groovy'
                     }
                 }
             }
