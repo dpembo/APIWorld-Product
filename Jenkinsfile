@@ -46,10 +46,20 @@ pipeline {
     }
   }
   stages {
-        stage('Checkout') {
-          steps {
-            echo "Chekout"
-            echo sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        stage('Setup') {
+          parallel {
+            stage('Checkout') {
+              steps {
+                echo "Chekout"
+                echo sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+              }
+              stage('Get Version Number') {
+                steps {
+                  echo 'Get Version Number'
+                  load 'versionInput.groovy'
+                }
+              }
+            }
           }
         }
         stage('Build') {
