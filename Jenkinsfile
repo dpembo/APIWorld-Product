@@ -105,9 +105,9 @@ sed -i \'s/\\[microservice\\]/apiworldbuild\\:8090/g\' microgateway/config.yml
             container('mg-jenkins') {
               echo 'Build Project'
               sh '''
-              WORKSPACE=`pwd`
+WORKSPACE=`pwd`
 cd /opt/softwareag/microgateway
-./microgateway.sh createDockerFile --docker_dir . -p 9090 -a $WORKSPACE/microgateway/Product.zip -dof ./Dockerfile -c $WORKSPACE/microgateway/config.yml'''
+./microgateway.sh createDockerFile --docker_dir . -p 9090 -a $WORKSPACE/microgateway/Product.zip -dof ./Dockerfile -c $WORKSPACE/microgateway/config.yml
 '''
             }
           }
