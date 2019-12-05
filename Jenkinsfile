@@ -81,9 +81,9 @@ fi
 echo Version is: $VERSION
 '''
                             echo "Compile Microservice"
-                            sh '#mvn compile'
+                            sh 'mvn compile'
                             echo "Package the Microservice"
-                            sh '#mvn package'
+                            sh 'mvn package'
                         }
                     }
                 }
