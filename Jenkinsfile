@@ -26,7 +26,7 @@ pipeline {
       - cat
       tty: true
     - name: docker
-      image: docker:18.02
+      image: docker.devopsinitiative.com/mg-jenkins:10.5.0.3-root
       securityContext:
         runAsUser: 0
         fsGroup: 0
@@ -125,7 +125,7 @@ cp Dockerfile $WORKSPACE/microgateway/Dockerfile
         }
         stage('Containerise') {
             steps {
-                container('mg-jenkins') {
+                container('docker') {
                     echo "Microservice"
                     sh '''
 id
