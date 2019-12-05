@@ -128,6 +128,8 @@ cp Dockerfile $WORKSPACE/microgateway/Dockerfile
                 container('docker') {
                     echo "Microservice"
                     sh '''
+id
+groups
 docker version
 #cd /opt/softwareag/Microgateway
 #cp $WORKSPACE/microgateway/Dockerfile ./Dockerfile
