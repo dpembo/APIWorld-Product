@@ -125,9 +125,10 @@ cp Dockerfile $WORKSPACE/microgateway/Dockerfile
         }
         stage('Containerise') {
             steps {
-                container('mg-jenkins') {
+                container('docker') {
                     echo "Microservice"
                     sh '''
+docker version
 #cd /opt/softwareag/Microgateway
 #cp $WORKSPACE/microgateway/Dockerfile ./Dockerfile
 cd $WORKSPACE/microgateway
