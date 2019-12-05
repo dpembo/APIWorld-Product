@@ -40,6 +40,7 @@ pipeline {
         path: /var/run/docker.sock
         # this field is optional
         type: File
+    alwaysPullImage: true
     imagePullSecrets:
     - name: regcred
   """
@@ -110,6 +111,7 @@ sed -i \'s/\\[microservice\\]/apiworldbuild\\:8090/g\' microgateway/config.yml
 WORKSPACE=`pwd`
 cd /opt/softwareag/Microgateway
 ./microgateway.sh createDockerFile --docker_dir . -p 9090 -a $WORKSPACE/microgateway/Product.zip -dof ./Dockerfile -c $WORKSPACE/microgateway/config.yml
+cp Dockerfile $WORKSPACE/microgateway/Dockerfile
 '''
                         }
                     }
@@ -119,8 +121,14 @@ cd /opt/softwareag/Microgateway
         }
         stage('Containerise') {
             steps {
-                echo "Microgateway"
-                kubernetes.image().withName(productservice).build().fromPath(".")
+                container('mg-jenkins') {
+                    echo "Microservice"
+                    sh '''
+cd /opt/softwareag/Microgateway
+cp $WORKSPACE/microgateway/Dockerfile ./Dockerfile
+docker build -t productservice:$VERSION --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
+'''
+                }
             }
         }
         stage('Parallel Stage') {
