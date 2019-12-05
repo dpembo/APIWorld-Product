@@ -13,7 +13,7 @@ pipeline {
       fsGroup: 1724
     containers:
     - name: mg-jenkins
-      image: docker.devopsinitiative.com/mg-jenkins:10.5.0.2
+      image: docker.devopsinitiative.com/mg-jenkins:10.5.0.3
       command:
       - cat
       tty: true
@@ -125,7 +125,7 @@ cp Dockerfile $WORKSPACE/microgateway/Dockerfile
         }
         stage('Containerise') {
             steps {
-                container('docker') {
+                container('mg-jenkins') {
                     echo "Microservice"
                     sh '''
 #cd /opt/softwareag/Microgateway
