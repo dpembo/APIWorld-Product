@@ -80,7 +80,14 @@ echo Version is: $VERSION
                             sh 'mvn compile'
                             echo "Package the Microservice"
                             sh 'mvn package'
-                            sh '''
+                        }
+                    }
+                }
+                stage('Microgateway') {
+                    steps {
+                        container('mg-jenkins') {
+                          echo 'Build Project'
+                          sh '''
 #Modify Alias depending on stage
 
 if [ $GIT_BRANCH = "staging" ]; then
@@ -100,15 +107,6 @@ fi
 sed -i \'s/\\[gateway\\]/apiworldbuild\\:5555/g\' microgateway/config.yml
 sed -i \'s/\\[microservice\\]/apiworldbuild\\:8090/g\' microgateway/config.yml
 
-'''
-                        }
-                    }
-                }
-                stage('Microgateway') {
-                    steps {
-                        container('mg-jenkins') {
-                          echo 'Build Project'
-                          sh '''
 WORKSPACE=`pwd`
 cd /opt/softwareag/Microgateway
 ./microgateway.sh createDockerFile --docker_dir . -p 9090 -a $WORKSPACE/microgateway/Product.zip -dof ./Dockerfile -c $WORKSPACE/microgateway/config.yml
@@ -117,6 +115,13 @@ cd /opt/softwareag/Microgateway
                     }
                 }
 
+            }
+        }
+        stage('Containerise') {
+            steps {
+                echo "Microgateway"
+                #docker build -t productservice:$VERSION --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
+                kubernetes.image().withName(productservice).build().fromPath(".")
             }
         }
         stage('Parallel Stage') {
