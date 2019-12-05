@@ -116,7 +116,8 @@ WORKSPACE=`pwd`
 cd /opt/softwareag/Microgateway
 ./microgateway.sh createDockerFile --docker_dir . -p 9090 -a $WORKSPACE/microgateway/Product.zip -dof ./Dockerfile -c $WORKSPACE/microgateway/config.yml
 cp Dockerfile $WORKSPACE/microgateway/Dockerfile
-ls tmp-docker
+mkdir $WORKSPACE/microgateway/tmp-docker
+cp tmp-docker/* $WORKSPACE/microgateway/tmp-docker
 '''
                         }
                     }
@@ -132,6 +133,8 @@ ls tmp-docker
 MICROGW_DIR=/opt/softwareag/Microgateway
 cd /opt/softwareag/Microgateway
 cp $WORKSPACE/microgateway/Dockerfile ./Dockerfile
+mkdir tmp-docker
+cp $WORKSPACE/microgateway/tmp-docker/* tmp-docker
 docker build -t productservice:$VERSION --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
 '''
                 }
