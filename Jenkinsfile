@@ -47,9 +47,6 @@ pipeline {
   }
   stages {
         stage('Startup') {
-            when {
-                branch 'master'
-            }
             failFast true
             parallel {
                 stage('Checkout') {
@@ -67,32 +64,35 @@ pipeline {
             }
         }
         stage('Build') {
-          steps {
-            container('maven') {
-              echo 'Build Project'
-              sh '''
-  if [[ -z "$VERSION" ]]; then
-    VERSION=ci
-  fi
-  echo Version is: $VERSION
-  '''
-              echo "Compile Microservice"
-              sh 'mvn compile'
-              echo "Package the Microservice"
-              sh 'mvn package'
-              sh '''
+            failFast true
+            parallel {
+                stage('Microservice') {
+                    steps {
+                        container('maven') {
+                            echo 'Build Project'
+                            sh '''
+if [[ -z "$VERSION" ]]; then
+  VERSION=ci
+fi
+echo Version is: $VERSION
+'''
+                            echo "Compile Microservice"
+                            sh 'mvn compile'
+                            echo "Package the Microservice"
+                            sh 'mvn package'
+                            sh '''
 #Modify Alias depending on stage
 
 if [ $GIT_BRANCH = "staging" ]; then
-   sed -i \'s/\\[gateway\\]/apiworldref\\:5555/g\' microgateway/config.yml
-   sed -i \'s/\\[microservice\\]/localhost\\:8090/g\' microgateway/config.yml
-   exit
+  sed -i \'s/\\[gateway\\]/apiworldref\\:5555/g\' microgateway/config.yml
+  sed -i \'s/\\[microservice\\]/localhost\\:8090/g\' microgateway/config.yml
+  exit
 fi
 
 if [ $GIT_BRANCH = "master" ]; then
-   sed -i \'s/\\[gateway\\]/apiworldref\\:5555/g\' microgateway/config.yml
-   sed -i \'s/\\[microservice\\]/localhost\\:8090/g\' microgateway/config.yml   
-   exit
+  sed -i \'s/\\[gateway\\]/apiworldref\\:5555/g\' microgateway/config.yml
+  sed -i \'s/\\[microservice\\]/localhost\\:8090/g\' microgateway/config.yml   
+  exit
 fi
 
 #Else assume its a development branch and set accordingly
@@ -101,20 +101,23 @@ sed -i \'s/\\[gateway\\]/apiworldbuild\\:5555/g\' microgateway/config.yml
 sed -i \'s/\\[microservice\\]/apiworldbuild\\:8090/g\' microgateway/config.yml
 
 '''
-            }
-          }
-        }
-        stage('Microgateway build') {
-          steps {
-            container('mg-jenkins') {
-              echo 'Build Project'
-              sh '''
+                        }
+                    }
+                }
+                stage('Microgateway') {
+                    steps {
+                        container('mg-jenkins') {
+                          echo 'Build Project'
+                          sh '''
 WORKSPACE=`pwd`
 cd /opt/softwareag/Microgateway
 ./microgateway.sh createDockerFile --docker_dir . -p 9090 -a $WORKSPACE/microgateway/Product.zip -dof ./Dockerfile -c $WORKSPACE/microgateway/config.yml
 '''
+                        }
+                    }
+                }
+
             }
-          }
         }
         stage('Parallel Stage') {
             when {
