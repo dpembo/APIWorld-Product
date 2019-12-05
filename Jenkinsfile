@@ -129,6 +129,13 @@ cp tmp-docker/* $WORKSPACE/microgateway/tmp-docker
             steps {
                 container('docker') {
                     echo "Microservice"
+                    sh ''''
+#Containerize Microservice
+
+docker build -t productservice:$VERSION --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
+#docker tag productservice:$VERSION productservice:$VERSION
+'''
+                    echo "Microgateway"
                     sh '''
 MICROGW_DIR=/opt/softwareag/Microgateway
 cd /opt/softwareag/Microgateway
