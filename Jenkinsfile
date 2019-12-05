@@ -17,6 +17,9 @@ pipeline {
       command:
       - cat
       tty: true
+      volumeMounts:
+      - mountPath: /var/run/docker.sock
+        name: docker-sock-volume
     - name: maven
       image: maven:3.3.9-jdk-8-alpine
       command:
@@ -107,7 +110,8 @@ fi
 
 sed -i \'s/\\[gateway\\]/apiworldbuild\\:5555/g\' microgateway/config.yml
 sed -i \'s/\\[microservice\\]/apiworldbuild\\:8090/g\' microgateway/config.yml
-
+'''
+                          sh '''
 WORKSPACE=`pwd`
 cd /opt/softwareag/Microgateway
 ./microgateway.sh createDockerFile --docker_dir . -p 9090 -a $WORKSPACE/microgateway/Product.zip -dof ./Dockerfile -c $WORKSPACE/microgateway/config.yml
