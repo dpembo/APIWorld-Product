@@ -120,7 +120,6 @@ cd /opt/softwareag/Microgateway
         stage('Containerise') {
             steps {
                 echo "Microgateway"
-                #docker build -t productservice:$VERSION --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
                 kubernetes.image().withName(productservice).build().fromPath(".")
             }
         }
