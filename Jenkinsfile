@@ -128,12 +128,8 @@ cp Dockerfile $WORKSPACE/microgateway/Dockerfile
                 container('docker') {
                     echo "Microservice"
                     sh '''
-id
-groups
-docker version
-#cd /opt/softwareag/Microgateway
-#cp $WORKSPACE/microgateway/Dockerfile ./Dockerfile
-cd $WORKSPACE/microgateway
+cd /opt/softwareag/Microgateway
+cp $WORKSPACE/microgateway/Dockerfile ./Dockerfile
 docker build -t productservice:$VERSION --build-arg PORT=8090 --build-arg JAR_FILE=service.jar .
 '''
                 }
