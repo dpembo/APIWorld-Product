@@ -13,7 +13,7 @@ pipeline {
       fsGroup: 1724
     containers:
     - name: mg-jenkins
-      image: docker.devopsinitiative.com/mg-jenkins:10.5
+      image: docker.devopsinitiative.com/mg-jenkins:10.5.0.1
       command:
       - cat
       tty: true
