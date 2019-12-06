@@ -84,6 +84,10 @@ echo Version is: $VERSION
                             sh 'mvn compile'
                             echo "Package the Microservice"
                             sh 'mvn package'
+                            sh '''
+echo "Move Package for Docker Build"
+cp $WORKSPACE/target/product-service-0.0.1.jar $WORKSPACE/service.jar
+'''
                         }
                     }
                 }
