@@ -37,7 +37,7 @@ public class ProductServiceApplication {
         productList.put("1",new ProductItem(1,"foo","Foo Description"));
         productList.put("2",new ProductItem(2,"bar","Bar Description"));
         productList.put("3",new ProductItem(3,"wgt","Widget Description"));
-        productList.put("4",new ProductItem(4,"dgb","Dave's Biscuits"));
+        productList.put("4",new ProductItem(4,"dgb","Dave Biscuits"));
     }
 
     public static void main(String[] args) {
